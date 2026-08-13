@@ -1,0 +1,48 @@
+/* ============================================================
+   responsive.css  — التجاوب (Tablet + Desktop)
+   ============================================================ */
+
+@media (min-width: 480px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .cats-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 768px) {
+  .navbar { padding: 0 24px; }
+  .navbar__links { display: flex; }
+
+  .hero { min-height: 460px; }
+  .hero__title { font-size: 2.2rem; }
+
+  .container { padding: 28px 24px; }
+
+  .page-banner { height: 280px; }
+
+  .series-head__poster { width: 190px; }
+  .series-head__title { font-size: 2rem; }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .cats-grid { grid-template-columns: repeat(4, 1fr); }
+
+  .hero { min-height: 520px; }
+  .hero__content { padding: 40px 36px; }
+  .hero__title { font-size: 2.6rem; }
+  .hero__desc { font-size: 1.05rem; }
+
+  .episode-row__thumb { width: 150px; }
+}
+
+/* تحسين سهولة اللمس على الشاشات الصغيرة */
+@media (hover: none) {
+  .btn { min-height: 48px; }
+  .btn-icon { min-width: 48px; }
+  .season-tab { min-height: 44px; }
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة التحكم — عالم الكرتون</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .skeleton-cell {
+      height: 16px;
+      background: linear-gradient(90deg, var(--bg-3) 25%, var(--bg-2) 50%, var(--bg-3) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 6px;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+
+    <!-- ===== القائمة الجانبية ===== -->
+    <aside class="sidebar">
+      <a class="sidebar__brand" href="index.html">
+        <img src="assets/logo.png" alt="شعار">
+        <span>لوحة التحكم</span>
+      </a>
+      <nav class="sidebar__links">
+        <a href="index.html" class="active">الرئيسية</a>
+        <a href="cartoons.html">المسلسلات</a>
+        <a href="seasons.html">المواسم</a>
+        <a href="episodes.html">الحلقات</a>
+        <a href="categories.html">التصنيفات</a>
+      </nav>
+    </aside>
+
+    <!-- ===== المحتوى ===== -->
+    <main class="main" id="dashboard">
+      <div class="spinner"></div>
+    </main>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js?v=3"></script>
+  <script src="js/admin.js?v=2"></script>
+  <script src="js/auth.js?v=1"></script>
+  <script src="js/dashboard.js?v=3"></script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إدارة الحلقات — لوحة التحكم</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .skeleton-cell {
+      height: 16px;
+      background: linear-gradient(90deg, var(--bg-3) 25%, var(--bg-2) 50%, var(--bg-3) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 6px;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+
+    <aside class="sidebar">
+      <a class="sidebar__brand" href="index.html">
+        <img src="assets/logo.png" alt="شعار">
+        <span>لوحة التحكم</span>
+      </a>
+      <nav class="sidebar__links">
+        <a href="index.html">الرئيسية</a>
+        <a href="cartoons.html">المسلسلات</a>
+        <a href="seasons.html">المواسم</a>
+        <a href="episodes.html" class="active">الحلقات</a>
+        <a href="categories.html">التصنيفات</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <div class="page-head">
+        <h1 class="page-title">إدارة الحلقات</h1>
+        <button class="btn btn--primary" id="add-btn">+ إضافة حلقة</button>
+      </div>
+
+      <div class="toolbar">
+        <select class="select toolbar__search" id="filter-cartoon">
+          <option value="">جميع المسلسلات</option>
+        </select>
+      </div>
+
+      <div id="table-area"></div>
+    </main>
+
+  </div>
+
+  <!-- ===== نافذة إضافة/تعديل حلقة ===== -->
+  <div class="modal" id="episode-modal">
+    <div class="modal__box">
+      <div class="modal__head">
+        <h2 class="modal__title" id="modal-title">إضافة حلقة</h2>
+        <button class="modal__close" data-close>✕</button>
+      </div>
+
+      <form class="form" id="episode-form">
+        <input type="hidden" id="episode-id">
+
+        <div class="field">
+          <label class="field__label" for="f-cartoon">المسلسل *</label>
+          <select class="select" id="f-cartoon" required></select>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-season">الموسم *</label>
+          <select class="select" id="f-season" required>
+            <option value="">— اختر مسلسلًا أولًا —</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-number">رقم الحلقة *</label>
+          <input class="input" id="f-number" type="number" min="1" required placeholder="1">
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-title">اسم الحلقة</label>
+          <input class="input" id="f-title" maxlength="200" placeholder="اسم الحلقة">
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-desc">وصف الحلقة</label>
+          <textarea class="textarea" id="f-desc" maxlength="2000"></textarea>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-vk">رابط الفيديو (YouTube أو VK) *</label>
+          <input class="input" id="f-vk" dir="ltr" required
+                 placeholder="https://www.youtube.com/watch?v=VIDEO_ID">
+          <small id="vk-help" style="color:var(--text-dim)">
+            الصق رابط YouTube وسيستخدم الموقع مشغل Plyr داخليًا، أو الصق رابط فيديو VK أو كود التضمين الرسمي كخيار احتياطي. روابط wall وحدها لا تكفي للتشغيل؛ استخدم من VK خيار مشاركة ← تصدير ثم الصق الكود كاملًا.
+          </small>
+          <div id="vk-status" class="vk-input-status" aria-live="polite"></div>
+        </div>
+
+        <!-- Thumbnail -->
+        <div class="field">
+          <label class="field__label">Thumbnail (صورة مصغرة)</label>
+          <label class="upload-zone">
+            <input type="file" id="f-thumb-file" accept="image/*">
+            <div>📤 اضغط لاختيار صورة مصغرة</div>
+          </label>
+          <img class="preview-img" id="f-thumb-preview" style="display:none">
+          <input type="hidden" id="f-thumb-url">
+          <small style="color:var(--text-dim)">يتم رفعها إلى Supabase Storage عند الحفظ</small>
+        </div>
+
+        <div class="modal__actions">
+          <button class="btn btn--primary" type="submit" id="save-btn">حفظ</button>
+          <button class="btn btn--ghost" type="button" data-close>إلغاء</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js?v=3"></script>
+  <script src="js/admin.js?v=media-1"></script>
+  <script src="js/auth.js?v=1"></script>
+  <script src="js/episodes.js?v=media-2"></script>
+</body>
+</html>

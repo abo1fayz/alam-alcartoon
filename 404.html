@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الصفحة غير موجودة — عالم الكرتون</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .err-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      text-align: center;
+      min-height: 60vh;
+    }
+    .err-page__code {
+      font-size: 5rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .err-page__msg { color: var(--text-dim); font-size: 1.05rem; }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <a class="navbar__brand" href="index.html">
+      <img src="assets/images/placeholder-poster.svg" alt="شعار الموقع">
+      <span>عالم الكرتون</span>
+    </a>
+    <div class="navbar__actions">
+      <a class="btn-icon" href="search.html" aria-label="البحث">🔍</a>
+    </div>
+  </header>
+
+  <main class="container err-page">
+    <div class="err-page__code">404</div>
+    <p class="err-page__msg">الصفحة التي تبحث عنها غير موجودة أو تم نقلها</p>
+    <a class="btn btn--primary" href="index.html">العودة للرئيسية</a>
+  </main>
+
+  <footer class="footer">عالم الكرتون © <span id="year"></span></footer>
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+/* ============================================================
+   responsive.css  — تجاوب لوحة التحكم
+   ============================================================ */
+
+@media (min-width: 768px) {
+  .layout { flex-direction: row; }
+
+  .sidebar {
+    width: var(--sidebar-w);
+    min-height: 100vh;
+    flex-direction: column;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    border-bottom: none;
+    border-inline-start: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    padding: 20px 14px;
+    gap: 16px;
+  }
+  .sidebar__brand { margin-inline-end: 0; }
+  .sidebar__links {
+    flex-direction: column;
+    width: auto;
+    margin-top: 10px;
+  }
+  .sidebar__links a { padding: 12px 14px; }
+
+  .stats-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+  .main { padding: 28px 24px 40px; }
+}
+
+@media (min-width: 1024px) {
+  .stats-grid { grid-template-columns: repeat(5, 1fr); }
+}
+
+/* سهولة اللمس على الشاشات الصغيرة */
+@media (hover: none) {
+  .btn { min-height: 44px; }
+}

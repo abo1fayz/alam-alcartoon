@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تفاصيل المسلسل — عالم الكرتون</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- ===== Navbar ===== -->
+  <header class="navbar">
+    <a class="navbar__brand" href="index.html">
+      <img src="assets/images/placeholder-poster.svg" alt="شعار الموقع">
+      <span>عالم الكرتون</span>
+    </a>
+    <nav class="navbar__links">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#categories">التصنيفات</a>
+    </nav>
+    <div class="navbar__actions">
+      <a class="btn-icon" href="search.html" aria-label="البحث">🔍</a>
+      <button class="btn-icon" id="menu-btn" aria-label="القائمة">☰</button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu__panel">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#categories">التصنيفات</a>
+      <a href="search.html">البحث</a>
+    </div>
+  </div>
+
+  <main class="container" id="page">
+    <div class="spinner"></div>
+  </main>
+
+  <footer class="footer">عالم الكرتون © <span id="year"></span></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/app.js?v=welcome-orange-1"></script>
+  <script src="js/series.js"></script>
+</body>
+</html>

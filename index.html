@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>عالم الكرتون — مشاهدة مسلسلات كرتون</title>
+  <meta name="description" content="منصة عربية لمشاهدة مسلسلات وأفلام الكرتون">
+
+  <!-- الخط -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <!-- الأنماط -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- ===== Navbar ===== -->
+  <header class="navbar">
+    <a class="navbar__brand" href="index.html">
+      <img src="assets/images/placeholder-poster.svg" alt="شعار الموقع">
+      <span>عالم الكرتون</span>
+    </a>
+
+    <nav class="navbar__links">
+      <a href="index.html" class="active">الرئيسية</a>
+      <a href="index.html#categories">التصنيفات</a>
+    </nav>
+
+    <div class="navbar__actions">
+      <a class="btn-icon" href="search.html" aria-label="البحث" title="البحث">🔍</a>
+      <button class="btn-icon" id="menu-btn" aria-label="القائمة">☰</button>
+    </div>
+  </header>
+
+  <!-- قائمة الموبايل -->
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu__panel">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#categories">التصنيفات</a>
+      <a href="search.html">البحث</a>
+    </div>
+  </div>
+
+  <main class="container">
+
+    <!-- ===== Hero ===== -->
+    <section class="hero" id="hero">
+      <div class="spinner" id="hero-spinner"></div>
+    </section>
+
+    <!-- ===== أحدث المسلسلات ===== -->
+    <section class="section">
+      <div class="section__head">
+        <h2 class="section__title">أحدث المسلسلات</h2>
+        <a class="section__link" href="search.html?type=series">عرض الكل</a>
+      </div>
+      <div class="grid" id="latest-series"></div>
+    </section>
+
+    <!-- ===== أحدث الحلقات ===== -->
+    <section class="section">
+      <div class="section__head">
+        <h2 class="section__title">أحدث الحلقات</h2>
+      </div>
+      <div class="episodes-list" id="latest-episodes"></div>
+    </section>
+
+    <!-- ===== الأكثر مشاهدة ===== -->
+    <section class="section">
+      <div class="section__head">
+        <h2 class="section__title">الأكثر مشاهدة</h2>
+        <a class="section__link" href="search.html?type=popular">عرض الكل</a>
+      </div>
+      <div class="grid" id="top-series"></div>
+    </section>
+
+    <!-- ===== التصنيفات ===== -->
+    <section class="section" id="categories">
+      <div class="section__head">
+        <h2 class="section__title">تصنيفات الكرتون</h2>
+      </div>
+      <div class="cats-grid" id="categories-grid"></div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    عالم الكرتون © <span id="year"></span> — جميع الفيديوهات من VK Video
+  </footer>
+
+  <!-- مكتبة Supabase الرسمية -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/app.js?v=welcome-orange-1"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+# أسرار وملفات بيئة محلية
+.env
+.env.*
+
+# حزم وملفات اختبار محلية
+*.zip
+*.log
+node_modules/
+backend/
+
+# ملفات النظام والمحررات
+.DS_Store
+.vscode/
+.idea/

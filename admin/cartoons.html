@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إدارة المسلسلات — لوحة التحكم</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    .skeleton-cell {
+      height: 16px;
+      background: linear-gradient(90deg, var(--bg-3) 25%, var(--bg-2) 50%, var(--bg-3) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 6px;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+
+    <aside class="sidebar">
+      <a class="sidebar__brand" href="index.html">
+        <img src="assets/logo.png" alt="شعار">
+        <span>لوحة التحكم</span>
+      </a>
+      <nav class="sidebar__links">
+        <a href="index.html">الرئيسية</a>
+        <a href="cartoons.html" class="active">المسلسلات</a>
+        <a href="seasons.html">المواسم</a>
+        <a href="episodes.html">الحلقات</a>
+        <a href="categories.html">التصنيفات</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <div class="page-head">
+        <h1 class="page-title">إدارة المسلسلات</h1>
+        <button class="btn btn--primary" id="add-btn">+ إضافة مسلسل</button>
+      </div>
+
+      <div class="toolbar">
+        <input class="input toolbar__search" id="search-input"
+               type="search" placeholder="ابحث عن مسلسل..." autocomplete="off">
+      </div>
+
+      <div id="table-area"></div>
+    </main>
+
+  </div>
+
+  <!-- ===== نافذة إضافة/تعديل مسلسل ===== -->
+  <div class="modal" id="cartoon-modal">
+    <div class="modal__box">
+      <div class="modal__head">
+        <h2 class="modal__title" id="modal-title">إضافة مسلسل</h2>
+        <button class="modal__close" data-close>✕</button>
+      </div>
+
+      <form class="form" id="cartoon-form">
+        <input type="hidden" id="cartoon-id">
+
+        <div class="field">
+          <label class="field__label" for="f-title">اسم المسلسل *</label>
+          <input class="input" id="f-title" required maxlength="200">
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-desc">الوصف</label>
+          <textarea class="textarea" id="f-desc" maxlength="2000"></textarea>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-category">التصنيف</label>
+          <select class="select" id="f-category">
+            <option value="">— اختر تصنيفًا —</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-year">سنة الإنتاج</label>
+          <input class="input" id="f-year" type="number" min="1900" max="2100" placeholder="2024">
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-status">الحالة</label>
+          <select class="select" id="f-status">
+            <option value="مستمر">مستمر</option>
+            <option value="مكتمل">مكتمل</option>
+            <option value="قريبًا">قريبًا</option>
+          </select>
+        </div>
+
+        <!-- Poster -->
+        <div class="field">
+          <label class="field__label">Poster (غلاف)</label>
+          <label class="upload-zone">
+            <input type="file" id="f-poster-file" accept="image/*">
+            <div>📤 اضغط لاختيار صورة Poster</div>
+          </label>
+          <img class="preview-img" id="f-poster-preview" style="display:none">
+          <input type="hidden" id="f-poster-url">
+          <small style="color:var(--text-dim)">يتم رفعها إلى Supabase Storage عند الحفظ</small>
+        </div>
+
+        <!-- Banner -->
+        <div class="field">
+          <label class="field__label">Banner (بانر)</label>
+          <label class="upload-zone">
+            <input type="file" id="f-banner-file" accept="image/*">
+            <div>📤 اضغط لاختيار صورة Banner</div>
+          </label>
+          <img class="preview-img" id="f-banner-preview" style="display:none">
+          <input type="hidden" id="f-banner-url">
+        </div>
+
+        <div class="modal__actions">
+          <button class="btn btn--primary" type="submit" id="save-btn">حفظ</button>
+          <button class="btn btn--ghost" type="button" data-close>إلغاء</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js?v=3"></script>
+  <script src="js/admin.js?v=2"></script>
+  <script src="js/auth.js?v=1"></script>
+  <script src="js/cartoons.js?v=3"></script>
+</body>
+</html>

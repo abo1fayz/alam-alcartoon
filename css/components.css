@@ -1,0 +1,325 @@
+/* ============================================================
+   components.css  — مكونات مشتركة (أزرار، بطاقات، نوافذ)
+   ============================================================ */
+
+/* ---------- نافذة منبثقة بسيطة ---------- */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, .7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.modal.is-open { display: flex; }
+
+.modal__box {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  width: min(440px, 100%);
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 24px;
+  animation: pop .2s ease-out;
+}
+@keyframes pop {
+  from { transform: scale(.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal__title { font-size: 1.2rem; font-weight: 800; margin-bottom: 14px; }
+
+/* ---------- تنبيهات ---------- */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  inset-inline-start: 50%;
+  transform: translateX(50%);
+  z-index: 300;
+  padding: 12px 22px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: .9rem;
+  box-shadow: var(--shadow);
+  animation: toast-in .25s ease-out;
+}
+.toast--error { border-color: rgba(248, 81, 73, .5); color: #ff7b72; }
+@keyframes toast-in {
+  from { transform: translate(50%, 20px); opacity: 0; }
+  to { transform: translate(50%, 0); opacity: 1; }
+}
+
+/* ---------- شارات ---------- */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 700;
+  background: rgba(124, 92, 255, .15);
+  border: 1px solid rgba(124, 92, 255, .4);
+}
+
+/* ---------- فاصل ---------- */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 16px 0;
+}
+
+
+/* ---------- شاشة الترحيب عند فتح الموقع ---------- */
+.welcome-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #120b07;
+  isolation: isolate;
+  animation: welcome-fade-in .28s ease-out both;
+}
+
+.welcome-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image: url("../assets/images/welcome-portrait.jpg");
+  background-size: cover;
+  background-position: center 24%;
+  filter: saturate(1.05) contrast(1.04);
+  transform: scale(1.015);
+}
+
+.welcome-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(15, 8, 4, .64) 0%, rgba(15, 8, 4, .08) 35%, rgba(15, 8, 4, .2) 56%, rgba(15, 8, 4, .95) 100%),
+    linear-gradient(90deg, rgba(255, 121, 0, .1), transparent 55%);
+}
+
+.welcome-overlay__content {
+  width: min(100%, 620px);
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(22px, 5vh, 56px) 20px clamp(24px, 5vh, 58px);
+  text-align: center;
+}
+
+.welcome-overlay__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff7ed;
+  font-weight: 800;
+  font-size: clamp(1.15rem, 3.7vw, 1.65rem);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, .7);
+}
+
+.welcome-overlay__brand-mark {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #ffb347, #ff7900);
+  color: #2b1204;
+  box-shadow: 0 8px 22px rgba(255, 121, 0, .38);
+}
+
+.welcome-overlay__message {
+  width: min(92%, 330px);
+  margin-top: 4vh;
+  padding: 18px 20px;
+  color: #2b170b;
+  background: rgba(255, 250, 241, .96);
+  border: 3px solid rgba(39, 19, 7, .92);
+  border-radius: 22px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .28);
+  font-size: clamp(1rem, 3.8vw, 1.25rem);
+  font-weight: 700;
+  line-height: 1.85;
+}
+
+.welcome-overlay__message strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--accent);
+  font-size: 1.05em;
+}
+
+.welcome-overlay__actions {
+  width: min(100%, 360px);
+  display: grid;
+  gap: 12px;
+}
+
+.welcome-overlay__button {
+  min-height: 58px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 13px 24px;
+  border: 1px solid rgba(255, 190, 111, .55);
+  border-radius: 18px;
+  color: #fff;
+  background: linear-gradient(110deg, #ff9d32 0%, #ff7900 52%, #f05d00 100%);
+  box-shadow: 0 9px 0 rgba(111, 41, 0, .38), 0 12px 28px rgba(255, 121, 0, .25);
+  font-size: 1.2rem;
+  font-weight: 800;
+  transition: transform .16s cubic-bezier(.23, 1, .32, 1), filter .2s, box-shadow .2s;
+}
+
+.welcome-overlay__button:hover {
+  filter: brightness(1.08) saturate(1.08);
+  box-shadow: 0 9px 0 rgba(111, 41, 0, .38), 0 16px 32px rgba(255, 121, 0, .34);
+}
+
+.welcome-overlay__button:active {
+  transform: translateY(4px) scale(.98);
+  box-shadow: 0 4px 0 rgba(111, 41, 0, .38), 0 8px 20px rgba(255, 121, 0, .22);
+}
+
+.welcome-overlay__button--secondary {
+  background: linear-gradient(110deg, #ffb347 0%, #ff8612 55%, #f26b00 100%);
+}
+
+.welcome-overlay__hint {
+  max-width: 340px;
+  color: rgba(255, 247, 237, .78);
+  font-size: .78rem;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, .7);
+}
+
+body.welcome-open { overflow: hidden; }
+@keyframes welcome-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+@media (min-width: 768px) {
+  .welcome-overlay::before { background-position: center 18%; }
+  .welcome-overlay__content { padding-inline: 36px; }
+  .welcome-overlay__message { margin-top: 2vh; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-overlay { animation: none; }
+  .welcome-overlay__button { transition: none; }
+}
+
+/* ---------- مشغل VK ---------- */
+.vk-player {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #0d0d0d;
+  box-shadow: var(--shadow);
+}
+
+.vk-player iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #0d0d0d;
+}
+
+.vk-player__loading {
+  margin-top: 12px;
+  color: var(--text-dim);
+  font-size: .9rem;
+}
+
+.vk-player__fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+.vk-player .error-box {
+  margin: 16px;
+  max-width: calc(100% - 32px);
+}
+
+.vk-post-embed {
+  width: 100%;
+  min-height: 300px;
+  padding: 8px;
+  overflow: auto;
+  background: #fff;
+}
+
+.vk-post-embed iframe {
+  position: static;
+  width: 100% !important;
+  min-height: 300px;
+  height: auto;
+  background: #fff;
+}
+
+@media (max-width: 480px) {
+  .vk-player { min-height: 190px; }
+  .vk-post-embed { min-height: 260px; padding: 4px; }
+}
+
+
+/* ---------- مشغل الوسائط متعدد المزودين ---------- */
+.youtube-player,
+.youtube-player .plyr,
+.youtube-player .plyr__video-embed,
+.youtube-player iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+}
+
+.youtube-player .plyr {
+  --plyr-color-main: var(--accent, #ff8a00);
+  --plyr-video-background: #0d0d0d;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.vk-player > .plyr {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.vk-player > .youtube-player {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 600px) {
+  .youtube-player .plyr__controls {
+    padding: 8px;
+  }
+}
