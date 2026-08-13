@@ -1,0 +1,347 @@
+/* ============================================================
+   series-page.css — صفحة المسلسل السينمائية
+   ============================================================ */
+
+.series-page {
+  width: 100%;
+  padding: 0 0 40px;
+}
+
+.series-cinematic-hero {
+  position: relative;
+  min-height: min(78vh, 650px);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: #120d09;
+  isolation: isolate;
+}
+
+.series-cinematic-hero__backdrop,
+.series-cinematic-hero__shade,
+.series-cinematic-hero__vignette {
+  position: absolute;
+  inset: 0;
+}
+
+.series-cinematic-hero__backdrop {
+  z-index: -3;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: .72;
+  filter: saturate(.92) contrast(1.04) brightness(.72);
+}
+
+.series-cinematic-hero__shade {
+  z-index: -2;
+  background:
+    linear-gradient(180deg, rgba(16, 12, 9, .2) 0%, rgba(16, 12, 9, .38) 30%, rgba(16, 12, 9, .94) 89%, var(--bg) 100%),
+    linear-gradient(90deg, rgba(18, 11, 6, .78) 0%, transparent 70%);
+}
+
+.series-cinematic-hero__vignette {
+  z-index: -1;
+  background: radial-gradient(circle at 70% 35%, transparent 18%, rgba(0, 0, 0, .4) 100%);
+}
+
+.series-cinematic-hero__inner {
+  width: min(100%, 1200px);
+  margin: 0 auto;
+  padding: 116px 16px 34px;
+}
+
+.series-cinematic-hero__content {
+  max-width: 720px;
+}
+
+.series-cinematic-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 11px;
+  color: #ffd0a1;
+  font-size: .8rem;
+  font-weight: 800;
+  letter-spacing: .02em;
+}
+
+.series-cinematic-hero__eyebrow::before {
+  content: "";
+  width: 30px;
+  height: 3px;
+  border-radius: 99px;
+  background: var(--accent);
+  box-shadow: 0 0 12px rgba(255, 121, 0, .72);
+}
+
+.series-cinematic-hero__title {
+  margin-bottom: 12px;
+  color: #fffaf4;
+  font-size: clamp(2rem, 9vw, 4.2rem);
+  font-weight: 800;
+  line-height: 1.08;
+  text-shadow: 0 5px 22px rgba(0, 0, 0, .55);
+}
+
+.series-cinematic-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 12px;
+  margin-bottom: 20px;
+  color: rgba(255, 247, 237, .83);
+  font-size: .9rem;
+  font-weight: 500;
+}
+
+.series-cinematic-hero__meta span:not(:last-child)::after {
+  content: "•";
+  margin-inline-start: 12px;
+  color: var(--accent);
+}
+
+.series-cinematic-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.series-cinematic-hero__actions .btn {
+  min-height: 50px;
+  padding-inline: 18px;
+  border-radius: 12px;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, .22);
+}
+
+.series-cinematic-hero__actions .btn--primary {
+  background: linear-gradient(135deg, #ff9b2e, var(--accent));
+  border-color: transparent;
+}
+
+.series-cinematic-hero__actions .btn--primary:hover { background: linear-gradient(135deg, #ffb153, #ff7900); }
+
+.series-bookmark.is-saved {
+  color: #fff;
+  border-color: rgba(255, 177, 83, .9);
+  background: rgba(255, 121, 0, .2);
+}
+
+.series-content {
+  width: min(100%, 1200px);
+  margin: 0 auto;
+  padding: 34px 16px 0;
+}
+
+.series-overview {
+  display: grid;
+  gap: 24px;
+  margin-bottom: 45px;
+}
+
+.series-overview__copy {
+  max-width: 790px;
+}
+
+.series-section-kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  color: var(--accent-hover);
+  font-size: .82rem;
+  font-weight: 800;
+  letter-spacing: .03em;
+}
+
+.series-section-kicker::before {
+  content: "";
+  width: 34px;
+  height: 3px;
+  border-radius: 99px;
+  background: var(--accent);
+}
+
+.series-overview__title,
+.series-episodes__title {
+  margin-bottom: 12px;
+  color: #fffaf4;
+  font-size: clamp(1.55rem, 6vw, 2.3rem);
+  font-weight: 800;
+}
+
+.series-overview__description {
+  color: #e0cabb;
+  font-size: 1.05rem;
+  line-height: 2.05;
+  white-space: pre-line;
+}
+
+.series-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.series-fact {
+  min-height: 86px;
+  padding: 13px 14px;
+  border: 1px solid rgba(116, 77, 43, .7);
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(42, 28, 18, .9), rgba(27, 20, 15, .94));
+}
+
+.series-fact__label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--text-dim);
+  font-size: .76rem;
+}
+
+.series-fact__value {
+  color: #fff8f1;
+  font-size: .95rem;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.series-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 48px;
+}
+
+.series-gallery__item {
+  position: relative;
+  aspect-ratio: 1.18 / 1;
+  overflow: hidden;
+  border: 1px solid rgba(118, 80, 48, .78);
+  border-radius: 14px;
+  background: var(--bg-2);
+}
+
+.series-gallery__item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(0, 0, 0, .28));
+  pointer-events: none;
+}
+
+.series-gallery__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .4s ease;
+}
+
+.series-gallery__item:hover img { transform: scale(1.06); }
+
+.series-episodes {
+  margin-top: 4px;
+}
+
+.series-episodes__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.series-episodes__count {
+  color: var(--text-dim);
+  font-size: .84rem;
+}
+
+.series-page .seasons-tabs {
+  gap: 9px;
+  margin-bottom: 18px;
+  padding: 3px 1px 7px;
+}
+
+.series-page .season-tab {
+  min-height: 45px;
+  padding: 10px 16px;
+  border-color: rgba(116, 77, 43, .88);
+  border-radius: 12px;
+  background: rgba(42, 28, 18, .82);
+}
+
+.series-page .season-tab.is-active {
+  color: #fff;
+  background: linear-gradient(135deg, #ff9b2e, var(--accent));
+  border-color: var(--accent);
+  box-shadow: 0 8px 17px rgba(255, 121, 0, .2);
+}
+
+.series-page .episodes-list { gap: 11px; }
+
+.series-page .episode-row {
+  min-height: 96px;
+  padding: 7px;
+  border-color: rgba(100, 65, 38, .72);
+  border-radius: 16px;
+  background: linear-gradient(105deg, rgba(39, 26, 17, .95), rgba(27, 20, 15, .95));
+}
+
+.series-page .episode-row:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 143, 23, .8);
+  background: linear-gradient(105deg, rgba(55, 34, 19, .95), rgba(31, 21, 14, .98));
+  box-shadow: 0 12px 24px rgba(0, 0, 0, .22);
+}
+
+.series-page .episode-row__thumb {
+  width: 116px;
+  border-radius: 11px;
+}
+
+.series-page .episode-row__num {
+  color: #ffb357;
+  font-size: .78rem;
+}
+
+.series-page .episode-row__title {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.series-page .episode-row__play {
+  width: 42px;
+  height: 42px;
+  margin-inline-start: 8px;
+  background: linear-gradient(135deg, #ff9b2e, var(--accent));
+  box-shadow: 0 7px 14px rgba(255, 121, 0, .2);
+}
+
+@media (min-width: 640px) {
+  .series-cinematic-hero__inner { padding-inline: 24px; }
+  .series-content { padding-inline: 24px; }
+  .series-gallery { gap: 14px; }
+  .series-facts { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .series-fact { min-height: 92px; }
+}
+
+@media (min-width: 900px) {
+  .series-cinematic-hero { min-height: min(72vh, 690px); }
+  .series-cinematic-hero__inner { padding: 150px 30px 55px; }
+  .series-content { padding: 50px 30px 0; }
+  .series-overview { grid-template-columns: minmax(0, 1fr) 380px; align-items: start; gap: 50px; }
+  .series-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .series-gallery { grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .series-page .episode-row__thumb { width: 168px; }
+}
+
+@media (max-width: 390px) {
+  .series-cinematic-hero__actions .btn { width: 100%; justify-content: center; }
+  .series-facts { gap: 8px; }
+  .series-fact { padding: 11px; }
+  .series-page .episode-row__thumb { width: 96px; }
+  .series-page .episode-row__play { width: 38px; height: 38px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .series-gallery__item img,
+  .series-page .episode-row { transition: none; }
+}

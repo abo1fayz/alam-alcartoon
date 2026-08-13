@@ -1,131 +1,199 @@
 /* ============================================================
-   series.js  — صفحة تفاصيل المسلسل (series.html?id=...)
+   series.js — صفحة تفاصيل المسلسل السينمائية (series.html?id=...)
    ============================================================ */
 
 (async function () {
-/* async IIFE — ليدعم top-level await في سكربت عادي */
-const pageEl = document.getElementById("page");
-const params = new URLSearchParams(location.search);
-const cartoonId = params.get("id");
+  const pageEl = document.getElementById("page");
+  const params = new URLSearchParams(location.search);
+  const cartoonId = params.get("id");
 
-document.getElementById("year").textContent = new Date().getFullYear();
+  document.getElementById("year").textContent = new Date().getFullYear();
 
-// ---------- قائمة الموبايل ----------
-const menuBtn = document.getElementById("menu-btn");
-const mobileMenu = document.getElementById("mobile-menu");
-menuBtn.addEventListener("click", () => mobileMenu.classList.add("is-open"));
-mobileMenu.addEventListener("click", (e) => {
-  if (e.target === mobileMenu) mobileMenu.classList.remove("is-open");
-});
+  // ---------- قائمة الموبايل ----------
+  const menuBtn = document.getElementById("menu-btn");
+  const mobileMenu = document.getElementById("mobile-menu");
+  menuBtn.addEventListener("click", () => mobileMenu.classList.add("is-open"));
+  mobileMenu.addEventListener("click", (event) => {
+    if (event.target === mobileMenu) mobileMenu.classList.remove("is-open");
+  });
 
-// ---------- التحقق من المعرف ----------
-if (!cartoonId) {
-  pageEl.innerHTML = `<div class="error-box">معرف المسلسل مفقود من الرابط</div>`;
-  throw new Error("missing id");
-}
-
-// ---------- تحميل بيانات المسلسل ----------
-const { data: cartoon, error: cError } = await sb
-  .from(TABLES.cartoons)
-  .select("*")
-  .eq("id", cartoonId)
-  .single();
-
-if (cError || !cartoon) {
-  pageEl.innerHTML = `
-    <div class="error-box">
-      <p>لم يتم العثور على المسلسل</p>
-      <br>
-      <a class="btn btn--primary" href="index.html">العودة للرئيسية</a>
-    </div>`;
-  throw new Error("cartoon not found");
-}
-
-const cat = await getCategoryName(cartoon.category_id);
-
-// ---------- تحميل المواسم ----------
-const { data: seasons, error: sError } = await sb
-  .from(TABLES.seasons)
-  .select("id, season_number, title")
-  .eq("cartoon_id", cartoonId)
-  .order("season_number", { ascending: true });
-
-if (sError) {
-  pageEl.innerHTML = `<div class="error-box">حدث خطأ أثناء جلب المواسم</div>`;
-  throw sError;
-}
-
-// ---------- بناء الصفحة ----------
-pageEl.innerHTML = `
-  <div class="page-banner">
-    <img class="page-banner__img" src="${cartoon.banner_url || ""}" alt="" onerror="this.style.display='none'">
-    <div class="page-banner__overlay"></div>
-  </div>
-
-  <div class="series-head">
-    <img class="series-head__poster" src="${cartoon.poster_url || ""}"
-         alt="${esc(cartoon.title)}" onerror="handleImageError(this)">
-    <div class="series-head__info">
-      <h1 class="series-head__title">${esc(cartoon.title)}</h1>
-      <p class="series-head__desc">${esc(cartoon.description)}</p>
-      <div class="series-head__stats">
-        <span>${esc(cat?.name || "—")}</span>
-        <span>سنة الإنتاج: ${cartoon.release_year || "—"}</span>
-        <span>الحالة: ${esc(cartoon.status)}</span>
-        <span>${fmtNum(cartoon.views)} مشاهدة</span>
-      </div>
-    </div>
-  </div>
-
-  ${seasons.length === 0
-    ? `<div class="empty-box">لا توجد مواسم أو حلقات لهذا المسلسل بعد</div>`
-    : `
-    <div class="seasons-tabs" id="seasons-tabs">
-      ${seasons.map((s, i) => `
-        <button class="season-tab ${i === 0 ? "is-active" : ""}" data-id="${s.id}">
-          الموسم ${s.season_number}
-        </button>`).join("")}
-    </div>
-    <div class="episodes-list" id="episodes-list">
-      <div class="spinner"></div>
-    </div>`}
-`;
-
-// ---------- تحميل حلقات الموسم ----------
-const episodesList = document.getElementById("episodes-list");
-const seasonIds = (seasons || []).map((s) => s.id);
-
-async function loadEpisodes(seasonId) {
-  if (!episodesList) return;
-  episodesList.innerHTML = `<div class="spinner"></div>`;
-
-  const { data, error } = await sb
-    .from(TABLES.episodes)
-    .select("id, title, episode_number, views, thumbnail_url, description")
-    .eq("season_id", seasonId)
-    .order("episode_number", { ascending: true });
-
-  if (error) {
-    episodesList.innerHTML = `<div class="error-box">حدث خطأ أثناء جلب الحلقات</div>`;
-    return;
+  // ---------- التحقق من المعرف ----------
+  if (!cartoonId) {
+    pageEl.className = "container";
+    pageEl.innerHTML = `<div class="error-box">معرف المسلسل مفقود من الرابط</div>`;
+    throw new Error("missing id");
   }
 
-  episodesList.innerHTML = data
-    .map((ep) => episodeRow(ep))
-    .join("") || `<div class="empty-box">لا توجد حلقات في هذا الموسم</div>`;
-}
+  // ---------- تحميل بيانات المسلسل ----------
+  const { data: cartoon, error: cartoonError } = await sb
+    .from(TABLES.cartoons)
+    .select("*")
+    .eq("id", cartoonId)
+    .single();
 
-// تبديل المواسم
-document.querySelectorAll("#seasons-tabs .season-tab").forEach((tab) => {
-  tab.addEventListener("click", () => {
-    document.querySelectorAll("#seasons-tabs .season-tab")
-      .forEach((t) => t.classList.remove("is-active"));
-    tab.classList.add("is-active");
-    loadEpisodes(tab.dataset.id);
+  if (cartoonError || !cartoon) {
+    pageEl.className = "container";
+    pageEl.innerHTML = `
+      <div class="error-box">
+        <p>لم يتم العثور على المسلسل</p>
+        <br>
+        <a class="btn btn--primary" href="index.html">العودة للرئيسية</a>
+      </div>`;
+    throw new Error("cartoon not found");
+  }
+
+  const category = await getCategoryName(cartoon.category_id);
+
+  // ---------- تحميل المواسم ----------
+  const { data: seasons, error: seasonsError } = await sb
+    .from(TABLES.seasons)
+    .select("id, season_number, title")
+    .eq("cartoon_id", cartoonId)
+    .order("season_number", { ascending: true });
+
+  if (seasonsError) {
+    pageEl.className = "container";
+    pageEl.innerHTML = `<div class="error-box">حدث خطأ أثناء جلب المواسم</div>`;
+    throw seasonsError;
+  }
+
+  const safeTitle = esc(cartoon.title || "مسلسل كرتوني");
+  const safeDescription = esc(cartoon.description || "لا يتوفر ملخص لهذا المسلسل بعد.");
+  const backdrop = cartoon.banner_url || cartoon.poster_url || "assets/images/placeholder-poster.svg";
+  const mediaImages = [...new Set([cartoon.banner_url, cartoon.poster_url].filter(Boolean))];
+  const savedKey = `cartoon-saved-${cartoonId}`;
+  const hasSaved = sessionStorage.getItem(savedKey) === "true";
+  const primarySeason = seasons?.[0];
+
+  // ---------- بناء الصفحة ----------
+  pageEl.className = "series-page";
+  pageEl.innerHTML = `
+    <section class="series-cinematic-hero" aria-labelledby="series-title">
+      <img class="series-cinematic-hero__backdrop" src="${esc(backdrop)}" alt="" onerror="handleImageError(this)">
+      <div class="series-cinematic-hero__shade"></div>
+      <div class="series-cinematic-hero__vignette"></div>
+
+      <div class="series-cinematic-hero__inner">
+        <div class="series-cinematic-hero__content">
+          <p class="series-cinematic-hero__eyebrow">${esc(category?.name || "رسوم متحركة")}</p>
+          <h1 class="series-cinematic-hero__title" id="series-title">${safeTitle}</h1>
+          <div class="series-cinematic-hero__meta" aria-label="معلومات المسلسل">
+            <span>${cartoon.release_year || "سنة غير محددة"}</span>
+            <span>${esc(cartoon.status || "متاح")}</span>
+            <span>${fmtNum(cartoon.views || 0)} مشاهدة</span>
+          </div>
+          <div class="series-cinematic-hero__actions">
+            ${primarySeason
+              ? `<a class="btn btn--primary" href="#episodes" data-first-season="${primarySeason.id}"><span aria-hidden="true">▶</span> شاهد الحلقات</a>`
+              : `<a class="btn btn--primary" href="#episodes"><span aria-hidden="true">▶</span> قريبًا</a>`}
+            <button class="btn btn--ghost series-bookmark ${hasSaved ? "is-saved" : ""}" id="series-bookmark" type="button" aria-pressed="${hasSaved}">
+              <span aria-hidden="true">${hasSaved ? "✓" : "🔖"}</span>
+              <span>${hasSaved ? "أضيفت إلى قائمتي" : "أضف إلى قائمتي"}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="series-content">
+      <section class="series-overview" aria-labelledby="overview-title">
+        <div class="series-overview__copy">
+          <p class="series-section-kicker">عن المسلسل</p>
+          <h2 class="series-overview__title" id="overview-title">ملخص المسلسل</h2>
+          <p class="series-overview__description">${safeDescription}</p>
+        </div>
+        <div class="series-facts" aria-label="تفاصيل المسلسل">
+          <div class="series-fact"><span class="series-fact__label">التصنيف</span><span class="series-fact__value">${esc(category?.name || "—")}</span></div>
+          <div class="series-fact"><span class="series-fact__label">سنة الإنتاج</span><span class="series-fact__value">${cartoon.release_year || "—"}</span></div>
+          <div class="series-fact"><span class="series-fact__label">الحالة</span><span class="series-fact__value">${esc(cartoon.status || "—")}</span></div>
+          <div class="series-fact"><span class="series-fact__label">المواسم</span><span class="series-fact__value">${seasons.length || 0} موسم</span></div>
+        </div>
+      </section>
+
+      ${mediaImages.length ? `
+        <section class="series-gallery" aria-label="صور من المسلسل">
+          ${mediaImages.map((image, index) => `
+            <div class="series-gallery__item">
+              <img src="${esc(image)}" alt="صورة ${index + 1} من ${safeTitle}" loading="lazy" onerror="handleImageError(this)">
+            </div>`).join("")}
+        </section>` : ""}
+
+      <section class="series-episodes" id="episodes" aria-labelledby="episodes-title">
+        <div class="series-episodes__head">
+          <div>
+            <p class="series-section-kicker">تابع الآن</p>
+            <h2 class="series-episodes__title" id="episodes-title">${seasons.length === 1 ? "الموسم الأول" : "المواسم والحلقات"}</h2>
+          </div>
+          <span class="series-episodes__count">${seasons.length ? `${seasons.length} موسم` : "لا توجد مواسم"}</span>
+        </div>
+
+        ${seasons.length === 0
+          ? `<div class="empty-box">لا توجد مواسم أو حلقات لهذا المسلسل بعد</div>`
+          : `
+            <div class="seasons-tabs" id="seasons-tabs" role="tablist" aria-label="المواسم">
+              ${seasons.map((season, index) => `
+                <button class="season-tab ${index === 0 ? "is-active" : ""}" type="button" role="tab" aria-selected="${index === 0}" data-id="${season.id}">
+                  ${esc(season.title || `الموسم ${season.season_number}`)}
+                </button>`).join("")}
+            </div>
+            <div class="episodes-list" id="episodes-list" aria-live="polite"><div class="spinner"></div></div>`}
+      </section>
+    </div>
+  `;
+
+  // ---------- حفظ مؤقت في القائمة خلال الجلسة ----------
+  const bookmarkButton = document.getElementById("series-bookmark");
+  bookmarkButton?.addEventListener("click", () => {
+    const isSaved = bookmarkButton.getAttribute("aria-pressed") === "true";
+    const nextState = !isSaved;
+    bookmarkButton.setAttribute("aria-pressed", String(nextState));
+    bookmarkButton.classList.toggle("is-saved", nextState);
+    bookmarkButton.querySelector("span[aria-hidden='true']").textContent = nextState ? "✓" : "🔖";
+    bookmarkButton.querySelector("span:last-child").textContent = nextState ? "أضيفت إلى قائمتي" : "أضف إلى قائمتي";
+    if (nextState) sessionStorage.setItem(savedKey, "true");
+    else sessionStorage.removeItem(savedKey);
   });
-});
 
-// تحميل أول موسم
-if (seasons.length > 0) loadEpisodes(seasonIds[0]);
+  // ---------- تحميل حلقات الموسم ----------
+  const episodesList = document.getElementById("episodes-list");
 
+  async function loadEpisodes(seasonId) {
+    if (!episodesList) return;
+    episodesList.innerHTML = `<div class="spinner"></div>`;
+
+    const { data, error } = await sb
+      .from(TABLES.episodes)
+      .select("id, title, episode_number, views, thumbnail_url, description")
+      .eq("season_id", seasonId)
+      .order("episode_number", { ascending: true });
+
+    if (error) {
+      episodesList.innerHTML = `<div class="error-box">حدث خطأ أثناء جلب الحلقات</div>`;
+      return;
+    }
+
+    episodesList.innerHTML = data.map((episode) => episodeRow(episode)).join("")
+      || `<div class="empty-box">لا توجد حلقات في هذا الموسم</div>`;
+  }
+
+  // ---------- تبديل المواسم ----------
+  document.querySelectorAll("#seasons-tabs .season-tab").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll("#seasons-tabs .season-tab").forEach((item) => {
+        item.classList.remove("is-active");
+        item.setAttribute("aria-selected", "false");
+      });
+      tab.classList.add("is-active");
+      tab.setAttribute("aria-selected", "true");
+      loadEpisodes(tab.dataset.id);
+    });
+  });
+
+  // ---------- تمرير زر المشاهدة إلى الحلقات ----------
+  document.querySelector("[data-first-season]")?.addEventListener("click", () => {
+    if (primarySeason) loadEpisodes(primarySeason.id);
+  });
+
+  // ---------- تحميل حلقات أول موسم ----------
+  if (primarySeason) loadEpisodes(primarySeason.id);
 })();
