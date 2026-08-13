@@ -124,11 +124,29 @@ function fmtDate(iso) {
 
 
 // ---------- شاشة الترحيب ----------
-// تظهر في كل فتح للواجهة، ولا تعتمد على localStorage حتى يراها المستخدم دائمًا.
+// تظهر مرة واحدة عند أول فتح للموقع في جلسة التصفح الحالية، ولا تتكرر عند التنقل بين الصفحات.
 const WELCOME_CONTACT_URL = "mailto:admin@example.com?subject=%D8%AA%D9%88%D8%A7%D8%B5%D9%84%20%D9%85%D8%B9%D9%8A%20-%20%D8%B9%D8%A7%D9%84%D9%85%20%D8%A7%D9%84%D9%83%D8%B1%D8%AA%D9%88%D9%86";
+const WELCOME_SESSION_KEY = "alam-alcartoon-welcome-seen-v1";
+
+function hasSeenWelcome() {
+  try {
+    return window.sessionStorage.getItem(WELCOME_SESSION_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function markWelcomeSeen() {
+  try {
+    window.sessionStorage.setItem(WELCOME_SESSION_KEY, "1");
+  } catch {
+    // إذا منع المتصفح sessionStorage، يبقى سلوك الشاشة آمنًا لكنه قد يتكرر بين الصفحات.
+  }
+}
 
 function initWelcomeScreen() {
-  if (!document.body || document.querySelector(".welcome-overlay")) return;
+  if (!document.body || document.querySelector(".welcome-overlay") || hasSeenWelcome()) return;
+  markWelcomeSeen();
 
   document.body.classList.add("welcome-open");
   document.body.insertAdjacentHTML("afterbegin", `
@@ -151,7 +169,7 @@ function initWelcomeScreen() {
           <a class="welcome-overlay__button welcome-overlay__button--secondary" href="${WELCOME_CONTACT_URL}" data-welcome-contact>
             تواصل معي
           </a>
-          <small class="welcome-overlay__hint">تظهر هذه الرسالة عند كل فتح للموقع</small>
+          <small class="welcome-overlay__hint">تظهر هذه الرسالة مرة واحدة عند أول فتح للموقع</small>
         </div>
       </div>
     </section>
