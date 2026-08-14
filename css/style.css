@@ -582,7 +582,7 @@ ul { list-style: none; }
 
 @media (max-width: 767px) {
   :root {
-    --header-h: 64px;
+    --header-h: 52px;
     --radius: 18px;
     --shadow: 0 10px 28px rgba(0, 0, 0, .32);
   }
@@ -598,21 +598,30 @@ ul { list-style: none; }
 
   .navbar {
     height: calc(var(--header-h) + env(safe-area-inset-top));
-    padding: env(safe-area-inset-top) 14px 0;
-    gap: 10px;
-    background: rgba(22, 14, 9, .88);
-    border-bottom-color: rgba(117, 68, 35, .48);
-    box-shadow: 0 5px 18px rgba(0, 0, 0, .13);
+    padding: env(safe-area-inset-top) 12px 0;
+    gap: 8px;
+    background: rgba(22, 14, 9, .9);
+    border-bottom-color: rgba(117, 68, 35, .42);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, .12);
   }
-  .navbar__brand { gap: 9px; font-size: 1.08rem; }
-  .navbar__brand img { width: 34px; height: 34px; border-radius: 11px; }
+  .navbar__brand {
+    gap: 0;
+    font-size: .96rem;
+    line-height: 1;
+    letter-spacing: -.01em;
+  }
+  /* على الهاتف يكفي اسم التطبيق؛ إخفاء الملصق الافتراضي يمنع ازدحام الرأس. */
+  .navbar__brand img { display: none; }
   .navbar__actions { gap: 6px; }
-  .btn-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 13px;
-    background: rgba(255, 255, 255, .055);
-    border-color: rgba(170, 101, 51, .42);
+  .navbar .btn-icon {
+    width: 38px;
+    min-width: 38px;
+    height: 38px;
+    min-height: 38px;
+    border-radius: 11px;
+    font-size: 1.05rem;
+    background: rgba(255, 255, 255, .05);
+    border-color: rgba(170, 101, 51, .36);
   }
 
   .mobile-menu__panel {

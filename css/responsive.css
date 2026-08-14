@@ -46,3 +46,8 @@
   .btn-icon { min-width: 48px; }
   .season-tab { min-height: 44px; }
 }
+
+/* يبقى رأس التطبيق مدمجًا مع مساحة لمس عملية للأزرار الأساسية. */
+@media (hover: none) and (max-width: 767px) {
+  .navbar .btn-icon { min-width: 38px; min-height: 38px; }
+}
