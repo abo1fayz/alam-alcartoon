@@ -293,6 +293,7 @@ function initAppBottomNav() {
   const active = type === "movies" ? "movies"
     : type === "series" ? "series"
     : type === "my-list" ? "my-list"
+    : page === "search.html" ? "search"
     : page === "index.html" ? "home"
     : "";
 
@@ -300,12 +301,14 @@ function initAppBottomNav() {
     home: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.7 12 3l9 7.7v9.8a.5.5 0 0 1-.5.5h-5.2v-6.5H8.7V21H3.5a.5.5 0 0 1-.5-.5z"/></svg>`,
     series: `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="m10 8 5 4-5 4z"/></svg>`,
     movies: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"/><path d="M7 5v14M17 5v14M2 10h20"/></svg>`,
+    search: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.2 4.2"/></svg>`,
     list: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h13M6 12h13M6 19h13"/><circle cx="3" cy="5" r="1"/><circle cx="3" cy="12" r="1"/><circle cx="3" cy="19" r="1"/></svg>`,
   })[name];
 
   const items = [
     { id: "home", label: "الرئيسية", href: "index.html", icon: icon("home") },
     { id: "series", label: "المسلسلات", href: "search.html?type=series", icon: icon("series") },
+    { id: "search", label: "البحث", href: "search.html", icon: icon("search") },
     { id: "movies", label: "الأفلام", href: "search.html?type=movies", icon: icon("movies") },
     { id: "my-list", label: "قائمتي", href: "search.html?type=my-list", icon: icon("list") },
   ];
