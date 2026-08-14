@@ -8,21 +8,27 @@ function handleImageError(img) {
   img.src = "assets/images/placeholder-poster.svg";
 }
 
-// ---------- بناء بطاقة مسلسل ----------
-function cartoonCard(c, category) {
+// ---------- بناء بطاقة مسلسل أو فيلم ----------
+function cartoonCard(c, categories = []) {
+  const list = Array.isArray(categories) ? categories : (categories ? [categories] : []);
+  const categoryLabel = list.length
+    ? list.slice(0, 2).map((category) => category.name).filter(Boolean).join(" · ")
+    : "—";
+  const contentLabel = c.content_type === "movie" ? "فيلم" : "مسلسل";
+
   return `
     <a class="card" href="series.html?id=${c.id}">
       <div class="card__img-wrap">
         <img class="card__poster" src="${c.poster_url || ""}"
              alt="${esc(c.title)}" loading="lazy"
              onerror="handleImageError(this)">
-        <span class="card__badge">${esc(category?.name || "—")}</span>
+        <span class="card__badge">${esc(categoryLabel)}</span>
       </div>
       <div class="card__body">
         <h3 class="card__title">${esc(c.title)}</h3>
         <div class="card__meta">
+          <span>${contentLabel}</span>
           <span>${c.release_year || "—"}</span>
-          <span>${c.status || "—"}</span>
           <span title="عدد المشاهدات">${fmtNum(c.views)} مشاهدة</span>
         </div>
       </div>
@@ -58,6 +64,15 @@ function showError(target, msg) {
   target.innerHTML = `<div class="error-box">${esc(msg)}</div>`;
 }
 
+// ---------- تشخيص ترقية الإصدار الثاني ----------
+function v2MigrationMessage(error, fallbackMessage) {
+  const details = String(error?.message || error?.details || error || "").toLowerCase();
+  const isMissingSchema = /content_type|cartoon_categories|schema cache/.test(details);
+  return isMissingSchema
+    ? "يلزم تنفيذ ملف supabase-v2-migration.sql مرة واحدة في Supabase لتفعيل الأفلام والتصنيفات المتعددة."
+    : fallbackMessage;
+}
+
 // ---------- أدوات نصية ----------
 function esc(str) {
   return String(str ?? "")
@@ -86,6 +101,71 @@ async function getCategories() {
 async function getCategoryName(categoryId) {
   const cats = await getCategories();
   return cats.find((c) => c.id === categoryId);
+}
+
+// ---------- ربط المحتوى بتصنيفاته (متوافق مع البيانات السابقة) ----------
+async function getCartoonCategories(cartoons) {
+  const items = Array.isArray(cartoons) ? cartoons.filter((item) => item?.id) : [];
+  const categoryById = new Map((await getCategories()).map((category) => [category.id, category]));
+  const result = new Map(items.map((item) => [item.id, []]));
+  if (!items.length) return result;
+
+  const { data, error } = await sb
+    .from("cartoon_categories")
+    .select("cartoon_id, category_id")
+    .in("cartoon_id", items.map((item) => item.id));
+
+  if (!error) {
+    (data || []).forEach((link) => {
+      const category = categoryById.get(link.category_id);
+      if (category && result.has(link.cartoon_id)) result.get(link.cartoon_id).push(category);
+    });
+  }
+
+  items.forEach((item) => {
+    const linked = result.get(item.id) || [];
+    const primary = categoryById.get(item.category_id);
+    if (primary && !linked.some((category) => category.id === primary.id)) linked.unshift(primary);
+    result.set(item.id, linked);
+  });
+
+  return result;
+}
+
+// ---------- قائمتي (محفوظة محليًا في الجهاز) ----------
+const MY_LIST_STORAGE_KEY = "alam-alcartoon-my-list-v1";
+
+function getMyListItems() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(MY_LIST_STORAGE_KEY) || "[]");
+    return Array.isArray(parsed) ? parsed.filter((item) => item && item.id) : [];
+  } catch {
+    return [];
+  }
+}
+
+function isInMyList(cartoonId) {
+  return getMyListItems().some((item) => item.id === cartoonId);
+}
+
+function toggleMyList(cartoon) {
+  const current = getMyListItems();
+  const index = current.findIndex((item) => item.id === cartoon.id);
+  if (index >= 0) {
+    current.splice(index, 1);
+  } else {
+    current.unshift({
+      id: cartoon.id,
+      title: cartoon.title || "",
+      poster_url: cartoon.poster_url || "",
+      banner_url: cartoon.banner_url || "",
+      release_year: cartoon.release_year || null,
+      status: cartoon.status || "",
+      content_type: cartoon.content_type || "series",
+    });
+  }
+  localStorage.setItem(MY_LIST_STORAGE_KEY, JSON.stringify(current.slice(0, 100)));
+  return index < 0;
 }
 
 // ---------- عداد المشاهدات (مرّة واحدة لكل جلسة) ----------
@@ -234,7 +314,44 @@ function parseYouTubeReference(input) {
 function parseMediaReference(input) {
   const youtube = parseYouTubeReference(input);
   if (youtube.valid) return youtube;
+
+  const direct = parseDirectReference(input);
+  if (direct.valid) return direct;
+
   return parseVKReference(input);
+}
+
+// ---------- تحليل رابط الفيديو المباشر ----------
+function parseDirectReference(input) {
+  const original = String(input || "").trim();
+  if (!original) return { valid: false, message: "رابط الفيديو مفقود" };
+
+  const explicitlyDirect = /^direct:/i.test(original);
+  const value = original.replace(/^direct:/i, "").trim();
+  try {
+    const url = new URL(value);
+    if (!/^https?:$/i.test(url.protocol)) {
+      return { valid: false, message: "يجب أن يبدأ الرابط المباشر بـ http أو https" };
+    }
+
+    const lowerValue = value.toLowerCase();
+    const isHls = /\.m3u8(?:$|[?#])/.test(lowerValue) || /(?:format|type)=.*m3u8/.test(url.search.toLowerCase());
+    const isVideoFile = /\.(?:mp4|webm|ogg|ogv|m4v|mov)(?:$|[?#])/.test(lowerValue);
+    if (!isHls && !isVideoFile && !explicitlyDirect) {
+      return { valid: false, message: "ليس رابط فيديو مباشرًا مدعومًا. استخدم MP4 أو WebM أو رابط HLS بصيغة M3U8، أو ابدأ الرابط الموقع بـ direct:." };
+    }
+
+    return {
+      valid: true,
+      kind: "direct",
+      url: url.toString(),
+      isHls,
+      stored: `direct:${url.toString()}`,
+      message: isHls ? "تم التعرف على بث HLS مباشر (M3U8)" : (isVideoFile ? "تم التعرف على ملف فيديو مباشر" : "تم التعرف على رابط مباشر معلن"),
+    };
+  } catch {
+    return { valid: false, message: "رابط الفيديو المباشر غير صالح" };
+  }
 }
 
 // ---------- تحليل مرجع VK في الموقع العام ----------

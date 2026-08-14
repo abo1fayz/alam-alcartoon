@@ -91,7 +91,7 @@ function showTableSkeleton(target, rows = 5) {
 // ---------- تحليل روابط الوسائط ----------
 function parseYouTubeReference(input) {
   const value = String(input || "").trim();
-  if (!value) return { valid: false, message: "أدخل رابط YouTube أو VK" };
+  if (!value) return { valid: false, message: "أدخل رابط YouTube أو VK أو رابطًا مباشرًا" };
   const stored = value.match(/^youtube:([A-Za-z0-9_-]{11})$/i);
   if (stored) {
     return { valid: true, kind: "youtube", id: stored[1], videoId: stored[1], stored: `youtube:${stored[1]}`, message: `تم استخراج فيديو YouTube: ${stored[1]}` };
@@ -119,7 +119,44 @@ function parseYouTubeReference(input) {
 function parseMediaReference(input) {
   const youtube = parseYouTubeReference(input);
   if (youtube.valid) return youtube;
+
+  const direct = parseDirectReference(input);
+  if (direct.valid) return direct;
+
   return parseVKReference(input);
+}
+
+// ---------- تحليل رابط الفيديو المباشر ----------
+function parseDirectReference(input) {
+  const original = String(input || "").trim();
+  if (!original) return { valid: false, message: "أدخل رابط الفيديو" };
+
+  const explicitlyDirect = /^direct:/i.test(original);
+  const value = original.replace(/^direct:/i, "").trim();
+  try {
+    const url = new URL(value);
+    if (!/^https?:$/i.test(url.protocol)) {
+      return { valid: false, message: "يجب أن يبدأ الرابط المباشر بـ http أو https" };
+    }
+
+    const lowerValue = value.toLowerCase();
+    const isHls = /\.m3u8(?:$|[?#])/.test(lowerValue) || /(?:format|type)=.*m3u8/.test(url.search.toLowerCase());
+    const isVideoFile = /\.(?:mp4|webm|ogg|ogv|m4v|mov)(?:$|[?#])/.test(lowerValue);
+    if (!isHls && !isVideoFile && !explicitlyDirect) {
+      return { valid: false, message: "الرابط المباشر يجب أن يكون MP4 أو WebM أو HLS بصيغة M3U8. إذا كان رابطًا موقعًا بلا امتداد فاكتبه مسبوقًا بـ direct:." };
+    }
+
+    return {
+      valid: true,
+      kind: "direct",
+      url: url.toString(),
+      isHls,
+      stored: `direct:${url.toString()}`,
+      message: isHls ? "تم التعرف على بث HLS مباشر (M3U8)" : (isVideoFile ? "تم التعرف على ملف فيديو مباشر" : "تم حفظ رابط مباشر معلن بصيغة direct:"),
+    };
+  } catch {
+    return { valid: false, message: "رابط الفيديو المباشر غير صالح" };
+  }
 }
 
 // ---------- تحليل مرجع فيديو VK ----------
@@ -214,7 +251,7 @@ function parseVKReference(input) {
 
   return {
     valid: false,
-    message: "الصيغة غير معروفة. الصق رابط الفيديو أو كود التضمين المصدر من VK.",
+    message: "الصيغة غير معروفة. الصق رابط YouTube أو VK أو رابط MP4/WebM/M3U8 مباشر.",
   };
 }
 
@@ -230,6 +267,7 @@ function buildVKEmbedUrl(src, query) {
 
 function vkReferenceToInput(value) {
   const raw = String(value || "").trim();
+  if (raw.startsWith("direct:")) return raw.slice(7);
   if (raw.startsWith("embed:")) return raw.slice(6);
   if (raw.startsWith("wall:")) {
     const [id, hash] = raw.slice(5).split(":");

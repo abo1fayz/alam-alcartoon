@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>إدارة المسلسلات — لوحة التحكم</title>
+  <title>إدارة المحتوى — لوحة التحكم</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -33,7 +33,7 @@
       </a>
       <nav class="sidebar__links">
         <a href="index.html">الرئيسية</a>
-        <a href="cartoons.html" class="active">المسلسلات</a>
+        <a href="cartoons.html" class="active">المحتوى</a>
         <a href="seasons.html">المواسم</a>
         <a href="episodes.html">الحلقات</a>
         <a href="categories.html">التصنيفات</a>
@@ -42,13 +42,13 @@
 
     <main class="main">
       <div class="page-head">
-        <h1 class="page-title">إدارة المسلسلات</h1>
-        <button class="btn btn--primary" id="add-btn">+ إضافة مسلسل</button>
+        <h1 class="page-title">إدارة المحتوى</h1>
+        <button class="btn btn--primary" id="add-btn">+ إضافة محتوى</button>
       </div>
 
       <div class="toolbar">
         <input class="input toolbar__search" id="search-input"
-               type="search" placeholder="ابحث عن مسلسل..." autocomplete="off">
+               type="search" placeholder="ابحث عن مسلسل أو فيلم..." autocomplete="off">
       </div>
 
       <div id="table-area"></div>
@@ -56,11 +56,11 @@
 
   </div>
 
-  <!-- ===== نافذة إضافة/تعديل مسلسل ===== -->
+  <!-- ===== نافذة إضافة/تعديل محتوى ===== -->
   <div class="modal" id="cartoon-modal">
     <div class="modal__box">
       <div class="modal__head">
-        <h2 class="modal__title" id="modal-title">إضافة مسلسل</h2>
+        <h2 class="modal__title" id="modal-title">إضافة محتوى</h2>
         <button class="modal__close" data-close>✕</button>
       </div>
 
@@ -68,7 +68,7 @@
         <input type="hidden" id="cartoon-id">
 
         <div class="field">
-          <label class="field__label" for="f-title">اسم المسلسل *</label>
+          <label class="field__label" for="f-title">اسم المحتوى *</label>
           <input class="input" id="f-title" required maxlength="200">
         </div>
 
@@ -78,10 +78,17 @@
         </div>
 
         <div class="field">
-          <label class="field__label" for="f-category">التصنيف</label>
-          <select class="select" id="f-category">
-            <option value="">— اختر تصنيفًا —</option>
+          <label class="field__label" for="f-content-type">نوع المحتوى *</label>
+          <select class="select" id="f-content-type" required>
+            <option value="series">مسلسل</option>
+            <option value="movie">فيلم</option>
           </select>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="f-categories">التصنيفات *</label>
+          <select class="select" id="f-categories" multiple size="5" required aria-describedby="categories-help"></select>
+          <small id="categories-help" style="color:var(--text-dim)">اختر تصنيفًا واحدًا أو أكثر. على الحاسوب استخدم Ctrl أو ⌘ لاختيار عدة تصنيفات.</small>
         </div>
 
         <div class="field">
@@ -131,8 +138,8 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase.js?v=3"></script>
-  <script src="js/admin.js?v=2"></script>
+  <script src="js/admin.js?v=v2-direct-media"></script>
   <script src="js/auth.js?v=1"></script>
-  <script src="js/cartoons.js?v=3"></script>
+  <script src="js/cartoons.js?v=v2-content-types"></script>
 </body>
 </html>

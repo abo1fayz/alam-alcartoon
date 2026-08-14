@@ -16,7 +16,7 @@ async function load() {
       </div>
 
       <div class="stats-grid">
-        <div class="stat-card"><div class="stat-card__num">${s.cartoonsCount}</div><div class="stat-card__label">إجمالي المسلسلات</div></div>
+        <div class="stat-card"><div class="stat-card__num">${s.cartoonsCount}</div><div class="stat-card__label">إجمالي المحتوى</div></div>
         <div class="stat-card"><div class="stat-card__num">${s.seasonsCount}</div><div class="stat-card__label">إجمالي المواسم</div></div>
         <div class="stat-card"><div class="stat-card__num">${s.episodesCount}</div><div class="stat-card__label">إجمالي الحلقات</div></div>
         <div class="stat-card"><div class="stat-card__num">${s.categoriesCount}</div><div class="stat-card__label">إجمالي التصنيفات</div></div>
@@ -26,7 +26,7 @@ async function load() {
       <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:14px">أكثر الحلقات مشاهدة</h2>
       <div class="table-wrap" style="margin-bottom:28px">
         <table>
-          <thead><tr><th>الحلقة</th><th>المسلسل</th><th>الموسم</th><th>المشاهدات</th></tr></thead>
+          <thead><tr><th>الحلقة</th><th>المحتوى</th><th>الموسم</th><th>المشاهدات</th></tr></thead>
           <tbody>${renderEpisodeRows(s.topEpisodes, true)}</tbody>
         </table>
       </div>
@@ -34,21 +34,22 @@ async function load() {
       <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:14px">أحدث الحلقات</h2>
       <div class="table-wrap" style="margin-bottom:28px">
         <table>
-          <thead><tr><th>الحلقة</th><th>المسلسل</th><th>الموسم</th><th>تاريخ الإضافة</th></tr></thead>
+          <thead><tr><th>الحلقة</th><th>المحتوى</th><th>الموسم</th><th>تاريخ الإضافة</th></tr></thead>
           <tbody>${renderEpisodeRows(s.latestEpisodes, false)}</tbody>
         </table>
       </div>
 
-      <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:14px">أحدث المسلسلات</h2>
+      <h2 style="font-size:1.15rem;font-weight:800;margin-bottom:14px">أحدث المحتوى</h2>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>البوستر</th><th>المسلسل</th><th>تاريخ الإضافة</th></tr></thead>
+          <thead><tr><th>البوستر</th><th>المحتوى</th><th>النوع</th><th>تاريخ الإضافة</th></tr></thead>
           <tbody>${s.latestCartoons.map((c) => `
             <tr>
               <td><img class="tbl-img" src="${escAttr(c.poster_url || "")}" alt="" onerror="this.style.visibility='hidden'"></td>
               <td>${esc(c.title)}</td>
+              <td>${c.content_type === "movie" ? "فيلم" : "مسلسل"}</td>
               <td>${fmtDate(c.created_at)}</td>
-            </tr>`).join("") || `<tr><td colspan="3" style="text-align:center;color:var(--text-dim)">لا توجد مسلسلات بعد</td></tr>`}</tbody>
+            </tr>`).join("") || `<tr><td colspan="4" style="text-align:center;color:var(--text-dim)">لا يوجد محتوى بعد</td></tr>`}</tbody>
         </table>
       </div>`;
   } catch (err) {

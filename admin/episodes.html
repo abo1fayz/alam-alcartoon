@@ -33,7 +33,7 @@
       </a>
       <nav class="sidebar__links">
         <a href="index.html">الرئيسية</a>
-        <a href="cartoons.html">المسلسلات</a>
+        <a href="cartoons.html">المحتوى</a>
         <a href="seasons.html">المواسم</a>
         <a href="episodes.html" class="active">الحلقات</a>
         <a href="categories.html">التصنيفات</a>
@@ -48,7 +48,7 @@
 
       <div class="toolbar">
         <select class="select toolbar__search" id="filter-cartoon">
-          <option value="">جميع المسلسلات</option>
+          <option value="">جميع عناصر المحتوى</option>
         </select>
       </div>
 
@@ -69,14 +69,14 @@
         <input type="hidden" id="episode-id">
 
         <div class="field">
-          <label class="field__label" for="f-cartoon">المسلسل *</label>
+          <label class="field__label" for="f-cartoon">المحتوى *</label>
           <select class="select" id="f-cartoon" required></select>
         </div>
 
         <div class="field">
           <label class="field__label" for="f-season">الموسم *</label>
           <select class="select" id="f-season" required>
-            <option value="">— اختر مسلسلًا أولًا —</option>
+            <option value="">— اختر المحتوى أولًا —</option>
           </select>
         </div>
 
@@ -96,11 +96,11 @@
         </div>
 
         <div class="field">
-          <label class="field__label" for="f-vk">رابط الفيديو (YouTube أو VK) *</label>
+          <label class="field__label" for="f-vk">رابط الفيديو (YouTube أو مباشر أو VK) *</label>
           <input class="input" id="f-vk" dir="ltr" required
-                 placeholder="https://www.youtube.com/watch?v=VIDEO_ID">
+                 placeholder="https://example.com/video.mp4 أو https://example.com/stream.m3u8">
           <small id="vk-help" style="color:var(--text-dim)">
-            الصق رابط YouTube وسيستخدم الموقع مشغل Plyr داخليًا، أو الصق رابط فيديو VK أو كود التضمين الرسمي كخيار احتياطي. روابط wall وحدها لا تكفي للتشغيل؛ استخدم من VK خيار مشاركة ← تصدير ثم الصق الكود كاملًا.
+            الصق رابط YouTube، أو رابط MP4/WebM مباشر، أو بث HLS بصيغة M3U8؛ وسيشغله الموقع داخليًا تلقائيًا. يمكنك أيضًا استخدام رابط فيديو VK أو كود التضمين الرسمي كخيار احتياطي. روابط wall وحدها لا تكفي للتشغيل؛ استخدم من VK خيار مشاركة ← تصدير ثم الصق الكود كاملًا.
           </small>
           <div id="vk-status" class="vk-input-status" aria-live="polite"></div>
         </div>
@@ -126,9 +126,9 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/supabase.js?v=3"></script>
-  <script src="js/admin.js?v=media-1"></script>
+  <script src="js/supabase.js?v=v2-content-types"></script>
+  <script src="js/admin.js?v=v2-direct-media"></script>
   <script src="js/auth.js?v=1"></script>
-  <script src="js/episodes.js?v=media-2"></script>
+  <script src="js/episodes.js?v=v2-direct-media-content"></script>
 </body>
 </html>

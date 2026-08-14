@@ -33,7 +33,7 @@
       </a>
       <nav class="sidebar__links">
         <a href="index.html">الرئيسية</a>
-        <a href="cartoons.html">المسلسلات</a>
+        <a href="cartoons.html">المحتوى</a>
         <a href="seasons.html" class="active">المواسم</a>
         <a href="episodes.html">الحلقات</a>
         <a href="categories.html">التصنيفات</a>
@@ -48,7 +48,7 @@
 
       <div class="toolbar">
         <select class="select toolbar__search" id="filter-cartoon">
-          <option value="">جميع المسلسلات</option>
+          <option value="">جميع عناصر المحتوى</option>
         </select>
       </div>
 
@@ -69,7 +69,7 @@
         <input type="hidden" id="season-id">
 
         <div class="field">
-          <label class="field__label" for="f-cartoon">المسلسل *</label>
+          <label class="field__label" for="f-cartoon">المحتوى *</label>
           <select class="select" id="f-cartoon" required></select>
         </div>
 
@@ -92,9 +92,9 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/supabase.js?v=3"></script>
-  <script src="js/admin.js?v=2"></script>
+  <script src="js/supabase.js?v=v2-content-types"></script>
+  <script src="js/admin.js?v=v2-direct-media"></script>
   <script src="js/auth.js?v=1"></script>
-  <script src="js/seasons.js?v=3"></script>
+  <script src="js/seasons.js?v=v2-content-labels"></script>
 </body>
 </html>

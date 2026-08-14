@@ -291,10 +291,26 @@ body.welcome-open { overflow: hidden; }
 .youtube-player,
 .youtube-player .plyr,
 .youtube-player .plyr__video-embed,
-.youtube-player iframe {
+.youtube-player iframe,
+.direct-player,
+.vk-player > .plyr {
   width: 100%;
   height: 100%;
   min-height: 100%;
+}
+
+.direct-player {
+  display: block;
+  object-fit: contain;
+  background: #0d0d0d;
+}
+
+.direct-player + .plyr,
+.vk-player > .plyr {
+  --plyr-color-main: var(--accent, #ff8a00);
+  --plyr-video-background: #0d0d0d;
+  border-radius: inherit;
+  overflow: hidden;
 }
 
 .youtube-player .plyr {

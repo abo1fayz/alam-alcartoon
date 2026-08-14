@@ -105,7 +105,7 @@ const API = {
         .limit(5),
       sb
         .from("cartoons")
-        .select("id, title, poster_url, created_at")
+        .select("id, title, poster_url, created_at, content_type")
         .order("created_at", { ascending: false })
         .limit(5),
       sb

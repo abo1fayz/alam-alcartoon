@@ -20,9 +20,11 @@
       <img src="assets/images/placeholder-poster.svg" alt="شعار الموقع">
       <span>عالم الكرتون</span>
     </a>
-    <nav class="navbar__links">
+    <nav class="navbar__links" aria-label="التنقل الرئيسي">
       <a href="index.html">الرئيسية</a>
-      <a href="index.html#categories">التصنيفات</a>
+      <a href="search.html?type=series">المسلسلات</a>
+      <a href="search.html?type=movies">الأفلام</a>
+      <a href="search.html?type=my-list">قائمتي</a>
     </nav>
     <div class="navbar__actions">
       <a class="btn-icon" href="search.html" aria-label="البحث">🔍</a>
@@ -33,7 +35,9 @@
   <div class="mobile-menu" id="mobile-menu">
     <div class="mobile-menu__panel">
       <a href="index.html">الرئيسية</a>
-      <a href="index.html#categories">التصنيفات</a>
+      <a href="search.html?type=series">المسلسلات</a>
+      <a href="search.html?type=movies">الأفلام</a>
+      <a href="search.html?type=my-list">قائمتي</a>
       <a href="search.html">البحث</a>
     </div>
   </div>
@@ -46,8 +50,9 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.plyr.io/3.8.4/plyr.polyfilled.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.20"></script>
   <script src="js/supabase.js"></script>
-  <script src="js/app.js?v=welcome-session-1"></script>
-  <script src="js/watch.js?v=media-plyr-2"></script>
+  <script src="js/app.js?v=v2-media-list"></script>
+  <script src="js/watch.js?v=v2-direct-media"></script>
 </body>
 </html>

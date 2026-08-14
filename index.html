@@ -25,9 +25,11 @@
       <span>عالم الكرتون</span>
     </a>
 
-    <nav class="navbar__links">
+    <nav class="navbar__links" aria-label="التنقل الرئيسي">
       <a href="index.html" class="active">الرئيسية</a>
-      <a href="index.html#categories">التصنيفات</a>
+      <a href="search.html?type=series">المسلسلات</a>
+      <a href="search.html?type=movies">الأفلام</a>
+      <a href="search.html?type=my-list">قائمتي</a>
     </nav>
 
     <div class="navbar__actions">
@@ -40,7 +42,9 @@
   <div class="mobile-menu" id="mobile-menu">
     <div class="mobile-menu__panel">
       <a href="index.html">الرئيسية</a>
-      <a href="index.html#categories">التصنيفات</a>
+      <a href="search.html?type=series">المسلسلات</a>
+      <a href="search.html?type=movies">الأفلام</a>
+      <a href="search.html?type=my-list">قائمتي</a>
       <a href="search.html">البحث</a>
     </div>
   </div>
@@ -61,12 +65,13 @@
       <div class="grid" id="latest-series"></div>
     </section>
 
-    <!-- ===== أحدث الحلقات ===== -->
+    <!-- ===== أحدث الأفلام ===== -->
     <section class="section">
       <div class="section__head">
-        <h2 class="section__title">أحدث الحلقات</h2>
+        <h2 class="section__title">أحدث الأفلام</h2>
+        <a class="section__link" href="search.html?type=movies">عرض الكل</a>
       </div>
-      <div class="episodes-list" id="latest-episodes"></div>
+      <div class="grid" id="latest-movies"></div>
     </section>
 
     <!-- ===== الأكثر مشاهدة ===== -->
@@ -89,13 +94,13 @@
   </main>
 
   <footer class="footer">
-    عالم الكرتون © <span id="year"></span> — جميع الفيديوهات من VK Video
+    عالم الكرتون © <span id="year"></span> — شاهد عبر YouTube أو VK أو روابط مباشرة
   </footer>
 
   <!-- مكتبة Supabase الرسمية -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase.js"></script>
-  <script src="js/app.js?v=welcome-session-1"></script>
-  <script src="js/home.js"></script>
+  <script src="js/app.js?v=v2-media-list"></script>
+  <script src="js/home.js?v=v2-movies-nav"></script>
 </body>
 </html>

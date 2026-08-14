@@ -1,6 +1,6 @@
 /* ============================================================
    watch.js — صفحة المشاهدة
-   يقبل مرجع فيديو VK مباشرًا أو مرجع wall محفوظًا من لوحة التحكم.
+   يدعم YouTube وVK والروابط المباشرة MP4 وHLS المحفوظة من لوحة التحكم.
    ============================================================ */
 
 (async function () {
@@ -62,9 +62,9 @@
 
   pageEl.innerHTML = `
     <div class="player-wrap">
-      <div id="vk-player" class="vk-player" aria-label="مشغل VK">
+      <div id="vk-player" class="vk-player" aria-label="مشغل الفيديو">
         <div class="spinner"></div>
-        <p class="vk-player__loading">جارٍ تجهيز مشغل VK...</p>
+        <p class="vk-player__loading">جارٍ تجهيز المشغل...</p>
       </div>
     </div>
 
@@ -113,10 +113,50 @@
       if (player) {
         player.innerHTML = `
           <div class="vk-player__fallback">
-            <p>${esc(parsed.message || "مرجع VK غير صالح لهذه الحلقة.")}</p>
-            <small>يجب حفظ رابط video_ext أو كود التضمين المصدر من VK في لوحة التحكم.</small>
+            <p>${esc(parsed.message || "مرجع الفيديو غير صالح لهذه الحلقة.")}</p>
+            <small>أضف رابط YouTube أو VK أو ملف MP4/WebM أو بث HLS بصيغة M3U8 من لوحة التحكم.</small>
           </div>`;
       }
+      return;
+    }
+
+    if (parsed.kind === "direct") {
+      const videoType = parsed.isHls ? "application/x-mpegURL" : "video/mp4";
+      player.innerHTML = `
+        <video id="direct-video" class="direct-player" controls playsinline preload="metadata" aria-label="مشغل الفيديو المباشر">
+          <source src="${esc(parsed.url)}" type="${videoType}">
+          متصفحك لا يدعم تشغيل الفيديو مباشرة.
+        </video>`;
+
+      const video = player.querySelector("#direct-video");
+      if (!video || !window.Plyr) {
+        player.innerHTML = `<div class="vk-player__fallback"><p>تعذر تحميل مشغل الفيديو المباشر.</p><small>تحقق من اتصال الإنترنت ثم أعد تحميل الصفحة.</small></div>`;
+        return;
+      }
+
+      let hls = null;
+      if (parsed.isHls && window.Hls?.isSupported()) {
+        hls = new window.Hls({ enableWorker: true });
+        hls.loadSource(parsed.url);
+        hls.attachMedia(video);
+        hls.on(window.Hls.Events.ERROR, (_event, data) => {
+          if (data?.fatal) {
+            player.innerHTML = `<div class="vk-player__fallback"><p>تعذر تشغيل بث HLS المباشر.</p><small>تأكد من أن رابط M3U8 عام ويدعم التشغيل من المتصفح.</small></div>`;
+            hls.destroy();
+          }
+        });
+      } else if (parsed.isHls && !video.canPlayType("application/vnd.apple.mpegurl")) {
+        player.innerHTML = `<div class="vk-player__fallback"><p>يتطلب هذا البث دعم HLS في المتصفح.</p><small>أعد تحميل الصفحة أو استخدم رابط MP4 مباشرًا.</small></div>`;
+        return;
+      }
+
+      const directPlayer = new window.Plyr(video, {
+        controls: ["play-large", "play", "progress", "current-time", "mute", "volume", "settings", "fullscreen"],
+        clickToPlay: true,
+        keyboard: { focused: true, global: false },
+        tooltips: { controls: true, seek: true },
+      });
+      directPlayer.on("destroy", () => hls?.destroy());
       return;
     }
 

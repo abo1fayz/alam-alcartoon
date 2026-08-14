@@ -44,13 +44,13 @@ async function load() {
 
 function fillFilter() {
   filterCartoon.innerHTML =
-    `<option value="">جميع المسلسلات</option>` +
+    `<option value="">جميع عناصر المحتوى</option>` +
     allCartoons.map((c) => `<option value="${c.id}">${esc(c.title)}</option>`).join("");
 }
 
 function fillCartoonSelect() {
   fCartoon.innerHTML =
-    `<option value="">— اختر مسلسلًا —</option>` +
+    `<option value="">— اختر محتوى —</option>` +
     allCartoons.map((c) => `<option value="${c.id}">${esc(c.title)}</option>`).join("");
 }
 
@@ -118,9 +118,9 @@ function render() {
           <tr>
             <th>الصورة</th>
             <th>الحلقة</th>
-            <th>المسلسل</th>
+            <th>المحتوى</th>
             <th>الموسم</th>
-            <th>VK ID</th>
+            <th>مصدر الفيديو</th>
             <th>المشاهدات</th>
             <th>إجراءات</th>
           </tr>
@@ -169,7 +169,7 @@ function resetForm() {
     vkStatus.textContent = "";
     vkStatus.className = "vk-input-status";
   }
-  fSeason.innerHTML = `<option value="">— اختر مسلسلًا أولًا —</option>`;
+  fSeason.innerHTML = `<option value="">— اختر المحتوى أولًا —</option>`;
   editingId = null;
   modalTitle.textContent = "إضافة حلقة";
 }
@@ -319,7 +319,7 @@ async function deleteEpisode(id) {
   const ep = allEpisodes.find((x) => x.id === id);
   const season = allSeasons.find((s) => s.id === ep?.season_id);
   const cartoon = allCartoons.find((c) => c.id === season?.cartoon_id);
-  if (!confirm(`هل أنت متأكد من حذف الحلقة ${ep?.episode_number} من "${cartoon?.title || "المسلسل"}"؟`)) return;
+  if (!confirm(`هل أنت متأكد من حذف الحلقة ${ep?.episode_number} من "${cartoon?.title || "المحتوى"}"؟`)) return;
 
   try {
     await API.remove("episodes", id);

@@ -19,9 +19,11 @@
       <img src="assets/images/placeholder-poster.svg" alt="شعار الموقع">
       <span>عالم الكرتون</span>
     </a>
-    <nav class="navbar__links">
+    <nav class="navbar__links" aria-label="التنقل الرئيسي">
       <a href="index.html">الرئيسية</a>
-      <a href="index.html#categories">التصنيفات</a>
+      <a href="search.html?type=series">المسلسلات</a>
+      <a href="search.html?type=movies">الأفلام</a>
+      <a href="search.html?type=my-list">قائمتي</a>
     </nav>
     <div class="navbar__actions">
       <a class="btn-icon" href="search.html" aria-label="البحث">🔍</a>
@@ -32,7 +34,9 @@
   <div class="mobile-menu" id="mobile-menu">
     <div class="mobile-menu__panel">
       <a href="index.html">الرئيسية</a>
-      <a href="index.html#categories">التصنيفات</a>
+      <a href="search.html?type=series">المسلسلات</a>
+      <a href="search.html?type=movies">الأفلام</a>
+      <a href="search.html?type=my-list">قائمتي</a>
       <a href="search.html">البحث</a>
     </div>
   </div>
@@ -40,13 +44,13 @@
   <main class="container">
     <div class="search-box">
       <input class="search-box__input" id="search-input"
-             type="search" placeholder="ابحث عن مسلسل أو حلقة أو تصنيف..."
+             type="search" placeholder="ابحث عن مسلسل أو فيلم أو حلقة أو تصنيف..."
              autocomplete="off">
       <button class="btn btn--primary search-box__btn" id="search-btn">بحث</button>
     </div>
 
     <div class="search-results" id="results">
-      <div class="empty-box">ابدأ الكتابة للبحث عن المسلسلات والحلقات</div>
+      <div class="empty-box">ابدأ الكتابة للبحث عن المسلسلات والأفلام والحلقات</div>
     </div>
   </main>
 
@@ -54,7 +58,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase.js"></script>
-  <script src="js/app.js?v=welcome-session-1"></script>
-  <script src="js/search.js"></script>
+  <script src="js/app.js?v=v2-media-list"></script>
+  <script src="js/search.js?v=v2-content-filters"></script>
 </body>
 </html>

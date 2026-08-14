@@ -37,14 +37,14 @@ async function load() {
 
 function fillFilter() {
   filterCartoon.innerHTML =
-    `<option value="">جميع المسلسلات</option>` +
+    `<option value="">جميع عناصر المحتوى</option>` +
     allCartoons.map((c) => `<option value="${c.id}">${esc(c.title)}</option>`).join("");
 }
 
 function fillCartoonSelect() {
   const select = document.getElementById("f-cartoon");
   select.innerHTML =
-    `<option value="">— اختر مسلسلًا —</option>` +
+    `<option value="">— اختر محتوى —</option>` +
     allCartoons.map((c) => `<option value="${c.id}">${esc(c.title)}</option>`).join("");
 }
 
@@ -68,7 +68,7 @@ function render() {
       <table>
         <thead>
           <tr>
-            <th>المسلسل</th>
+            <th>المحتوى</th>
             <th>رقم الموسم</th>
             <th>اسم الموسم</th>
             <th>تاريخ الإضافة</th>
@@ -166,7 +166,7 @@ form.addEventListener("submit", async (e) => {
 async function deleteSeason(id) {
   const s = allSeasons.find((x) => x.id === id);
   const c = allCartoons.find((c) => c.id === s?.cartoon_id);
-  if (!confirm(`هل أنت متأكد من حذف الموسم ${s?.season_number} من "${c?.title || "المسلسل"}"؟\nسيتم حذف حلقاته أيضًا.`)) return;
+  if (!confirm(`هل أنت متأكد من حذف الموسم ${s?.season_number} من "${c?.title || "المحتوى"}"؟\nسيتم حذف حلقاته أيضًا.`)) return;
 
   try {
     await API.remove("seasons", id);

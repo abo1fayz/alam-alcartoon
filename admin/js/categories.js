@@ -14,6 +14,7 @@ const modalTitle = document.getElementById("modal-title");
 
 let allCategories = [];
 let allCartoons = [];
+let categoryLinksByCartoon = new Map();
 let editingId = null;
 
 const backendOk = await checkSupabase();
@@ -22,10 +23,19 @@ if (!backendOk) showConnectionWarning();
 // ---------- تحميل البيانات ----------
 async function load() {
   try {
-    [allCategories, allCartoons] = await Promise.all([
+    const [categories, cartoons, linksResult] = await Promise.all([
       API.get("categories"),
       API.get("cartoons"),
+      sb.from("cartoon_categories").select("cartoon_id, category_id"),
     ]);
+    allCategories = categories;
+    allCartoons = cartoons;
+    categoryLinksByCartoon = new Map();
+    (linksResult.data || []).forEach((link) => {
+      const linked = categoryLinksByCartoon.get(link.cartoon_id) || [];
+      linked.push(link.category_id);
+      categoryLinksByCartoon.set(link.cartoon_id, linked);
+    });
     render();
   } catch (err) {
     tableArea.innerHTML = `<div class="error-box">حدث خطأ: ${esc(err.message)}</div>`;
@@ -57,7 +67,10 @@ function render() {
           ${allCategories
             .map(
               (c) => {
-                const count = allCartoons.filter((x) => x.category_id === c.id).length;
+                const count = allCartoons.filter((cartoon) => {
+                  const ids = new Set([...(categoryLinksByCartoon.get(cartoon.id) || []), cartoon.category_id].filter(Boolean));
+                  return ids.has(c.id);
+                }).length;
                 return `
               <tr>
                 <td>${esc(c.name)}</td>
@@ -148,9 +161,12 @@ form.addEventListener("submit", async (e) => {
 // ---------- حذف تصنيف ----------
 async function deleteCategory(id) {
   const c = allCategories.find((x) => x.id === id);
-  const count = allCartoons.filter((x) => x.category_id === id).length;
+  const count = allCartoons.filter((cartoon) => {
+    const ids = new Set([...(categoryLinksByCartoon.get(cartoon.id) || []), cartoon.category_id].filter(Boolean));
+    return ids.has(id);
+  }).length;
   const msg = count
-    ? `هذا التصنيف مربوط بـ ${count} مسلسل(ات).\nهل أنت متأكد من حذف التصنيف "${c.name}"؟`
+    ? `هذا التصنيف مربوط بـ ${count} عنصر/عناصر محتوى.\nهل أنت متأكد من حذف التصنيف "${c.name}"؟`
     : `هل أنت متأكد من حذف التصنيف "${c.name}"؟`;
   if (!confirm(msg)) return;
 
