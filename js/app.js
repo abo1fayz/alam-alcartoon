@@ -206,9 +206,12 @@ function fmtDate(iso) {
 
 
 // ---------- شاشة الترحيب ----------
-// تظهر مرة واحدة عند أول فتح للموقع في جلسة التصفح الحالية، ولا تتكرر عند التنقل بين الصفحات.
-const WELCOME_CONTACT_URL = "mailto:admin@example.com?subject=%D8%AA%D9%88%D8%A7%D8%B5%D9%84%20%D9%85%D8%B9%D9%8A%20-%20%D8%B9%D8%A7%D9%84%D9%85%20%D8%A7%D9%84%D9%83%D8%B1%D8%AA%D9%88%D9%86";
 const WELCOME_SESSION_KEY = "alam-alcartoon-welcome-seen-v1";
+const CONTACT_LINKS = {
+  instagram: "https://www.instagram.com/m.a.4.w.a.n?igsh=MXQ1ZW5zbmp6Y2w4NA==",
+  whatsappSyria: "https://wa.me/963947733035",
+  whatsappEgypt: "https://wa.me/201095964960",
+};
 
 function hasSeenWelcome() {
   try {
@@ -241,17 +244,21 @@ function initWelcomeScreen() {
 
         <p class="welcome-overlay__message">
           <strong>أهلًا بك في عالم الكرتون</strong>
-          إذا أردت إضافة أي فيلم أو مسلسل، يمكنك إخباري بذلك عبر زر التواصل الموجود أسفل الشاشة، وسأقوم بتنفيذ طلبك فورًا وبسرعة.
+          استمتع بمشاهدة مسلسلاتك وأفلامك الكرتونية المفضلة في مكان واحد.
         </p>
 
         <div class="welcome-overlay__actions">
           <button class="welcome-overlay__button" type="button" data-welcome-enter>
             الدخول
           </button>
-          <a class="welcome-overlay__button welcome-overlay__button--secondary" href="${WELCOME_CONTACT_URL}" data-welcome-contact>
+          <button class="welcome-overlay__button welcome-overlay__button--secondary" type="button" data-welcome-contact aria-expanded="false" aria-controls="welcome-contact-options">
             تواصل معي
-          </a>
-          <small class="welcome-overlay__hint">تظهر هذه الرسالة مرة واحدة عند أول فتح للموقع</small>
+          </button>
+          <div class="welcome-overlay__contact-options" id="welcome-contact-options" hidden>
+            <a class="welcome-overlay__contact-link welcome-overlay__contact-link--instagram" href="${CONTACT_LINKS.instagram}" target="_blank" rel="noopener noreferrer">زيارة إنستغرام</a>
+            <a class="welcome-overlay__contact-link" href="${CONTACT_LINKS.whatsappSyria}" target="_blank" rel="noopener noreferrer">واتساب المطور <bdi dir="ltr">+963 947 733 035</bdi></a>
+            <a class="welcome-overlay__contact-link" href="${CONTACT_LINKS.whatsappEgypt}" target="_blank" rel="noopener noreferrer">واتساب المطور <bdi dir="ltr">+20 10 9596 4960</bdi></a>
+          </div>
         </div>
       </div>
     </section>
@@ -260,6 +267,7 @@ function initWelcomeScreen() {
   const overlay = document.querySelector(".welcome-overlay");
   const enterButton = overlay?.querySelector("[data-welcome-enter]");
   const contactButton = overlay?.querySelector("[data-welcome-contact]");
+  const contactOptions = overlay?.querySelector("#welcome-contact-options");
 
   const closeWelcome = () => {
     if (!overlay) return;
@@ -271,7 +279,12 @@ function initWelcomeScreen() {
 
   enterButton?.addEventListener("click", closeWelcome);
   contactButton?.addEventListener("click", () => {
-    window.setTimeout(closeWelcome, 80);
+    const willOpen = contactOptions?.hidden !== false;
+    if (contactOptions) contactOptions.hidden = !willOpen;
+    contactButton.setAttribute("aria-expanded", String(willOpen));
+  });
+  contactOptions?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => window.setTimeout(closeWelcome, 80));
   });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") closeWelcome();

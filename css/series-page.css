@@ -561,7 +561,7 @@
   .series-page { padding-bottom: 14px; }
   .series-cinematic-hero {
     /* بانر أقصر بصريًا على الهاتف حتى تبقى الخلفية عريضة لا طويلة. */
-    min-height: clamp(330px, 45svh, 405px);
+    min-height: clamp(312px, 42svh, 378px);
     align-items: flex-end;
   }
   .series-cinematic-hero__inner {

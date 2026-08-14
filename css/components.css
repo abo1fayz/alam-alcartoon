@@ -339,3 +339,38 @@ body.welcome-open { overflow: hidden; }
     padding: 8px;
   }
 }
+
+/* خيارات التواصل ضمن شاشة الترحيب */
+.welcome-overlay__contact-options {
+  display: grid;
+  gap: 8px;
+  margin-top: -2px;
+  padding: 3px 1px 1px;
+}
+.welcome-overlay__contact-options[hidden] { display: none; }
+.welcome-overlay__contact-link {
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border: 1px solid rgba(255, 218, 174, .38);
+  border-radius: 14px;
+  color: #fff8f1;
+  background: rgba(38, 22, 13, .84);
+  box-shadow: 0 7px 18px rgba(0, 0, 0, .16);
+  font-size: .88rem;
+  font-weight: 700;
+  transition: transform .16s cubic-bezier(.23, 1, .32, 1), background .2s, border-color .2s;
+}
+.welcome-overlay__contact-link:hover {
+  border-color: rgba(255, 160, 63, .84);
+  background: rgba(75, 38, 16, .92);
+}
+.welcome-overlay__contact-link:active { transform: scale(.98); }
+.welcome-overlay__contact-link--instagram {
+  color: #fff;
+  background: linear-gradient(110deg, #833ab4, #c13584 48%, #fd1d1d 100%);
+  border-color: rgba(255, 208, 234, .5);
+}
