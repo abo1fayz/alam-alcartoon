@@ -29,7 +29,7 @@
   async function loadHero() {
     const { data, error } = await sb
       .from(TABLES.cartoons)
-      .select("id, title, description, banner_url, status, category_id, content_type")
+      .select("id, title, description, banner_url, status, release_year, category_id, content_type")
       .order("views", { ascending: false })
       .limit(1)
       .single();
@@ -45,17 +45,18 @@
       .map((category) => category.name)
       .join(" · ") || "—";
     const contentLabel = data.content_type === "movie" ? "فيلم" : "مسلسل";
+    const heroMeta = [data.release_year, contentLabel, data.status || "متاح"].filter(Boolean);
 
     heroEl.innerHTML = `
       <img class="hero__img" src="${data.banner_url || ""}" alt="${esc(data.title)}" onerror="this.style.display='none'">
       <div class="hero__overlay"></div>
       <div class="hero__content">
+        <p class="hero__eyebrow">اختيار عالم الكرتون</p>
         <h1 class="hero__title">${esc(data.title)}</h1>
-        <p class="hero__desc">${esc(data.description)}</p>
+        <div class="hero__meta">${heroMeta.map((item) => `<span>${esc(String(item))}</span>`).join("")}</div>
+        <p class="hero__desc">${esc(data.description || "استمتع بمشاهدة هذا المحتوى الكرتوني المميز.")}</p>
         <div class="hero__tags">
-          <span>${esc(contentLabel)}</span>
           <span>${esc(categoryLabel)}</span>
-          <span>${esc(data.status || "")}</span>
         </div>
         <div class="hero__actions">
           <a class="btn btn--primary" href="series.html?id=${data.id}">▶ مشاهدة الآن</a>
@@ -121,6 +122,13 @@
       .map((category) => `<a class="cat-chip" href="search.html?q=${encodeURIComponent(category.name)}">${esc(category.name)}</a>`)
       .join("") || `<div class="empty-box">لا توجد تصنيفات بعد</div>`;
   }
+
+  document.querySelectorAll(".home-content-tabs a").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".home-content-tabs a").forEach((item) => item.classList.remove("is-active"));
+      tab.classList.add("is-active");
+    });
+  });
 
   await Promise.all([
     loadHero(),

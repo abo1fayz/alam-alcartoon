@@ -67,6 +67,9 @@
   const hasSaved = isInMyList(cartoonId);
   const primarySeason = seasons?.[0];
   const watchLabel = cartoon.content_type === "movie" ? "شاهد الآن" : "شاهد الحلقات";
+  const summaryTitle = cartoon.content_type === "movie" ? "ملخص الفيلم" : "ملخص المسلسل";
+  const seasonCountLabel = seasons.length === 1 ? "موسم واحد" : `${seasons.length} مواسم`;
+  const heroMeta = [categoryLabel, cartoon.release_year, seasons.length ? seasonCountLabel : null].filter(Boolean);
 
   // ---------- بناء الصفحة ----------
   pageEl.className = "series-page";
@@ -78,12 +81,10 @@
 
       <div class="series-cinematic-hero__inner">
         <div class="series-cinematic-hero__content">
-          <p class="series-cinematic-hero__eyebrow">${esc(contentLabel)} · ${esc(categoryLabel)}</p>
+          <p class="series-cinematic-hero__eyebrow">${esc(contentLabel)}</p>
           <h1 class="series-cinematic-hero__title" id="series-title">${safeTitle}</h1>
           <div class="series-cinematic-hero__meta" aria-label="معلومات المسلسل">
-            <span>${cartoon.release_year || "سنة غير محددة"}</span>
-            <span>${esc(cartoon.status || "متاح")}</span>
-            <span>${fmtNum(cartoon.views || 0)} مشاهدة</span>
+            ${heroMeta.map((item) => `<span>${esc(String(item))}</span>`).join("")}
           </div>
           <div class="series-cinematic-hero__actions">
             ${primarySeason
@@ -91,18 +92,23 @@
               : `<a class="btn btn--primary" href="#episodes"><span aria-hidden="true">▶</span> قريبًا</a>`}
             <button class="btn btn--ghost series-bookmark ${hasSaved ? "is-saved" : ""}" id="series-bookmark" type="button" aria-pressed="${hasSaved}">
               <span aria-hidden="true">${hasSaved ? "✓" : "🔖"}</span>
-              <span>${hasSaved ? "أضيفت إلى قائمتي" : "أضف إلى قائمتي"}</span>
+              <span>${hasSaved ? "أضيفت إلى قائمتي" : "قائمتي"}</span>
             </button>
           </div>
         </div>
       </div>
     </section>
 
+    <nav class="series-anchor-tabs" aria-label="أقسام المحتوى">
+      <a href="#episodes" class="is-active">الحلقات</a>
+      <a href="#overview">تفاصيل</a>
+      <a href="#similar">مشابه</a>
+    </nav>
+
     <div class="series-content">
-      <section class="series-overview" aria-labelledby="overview-title">
+      <section class="series-overview" id="overview" aria-labelledby="overview-title">
         <div class="series-overview__copy">
-          <p class="series-section-kicker">عن ${contentLabel}</p>
-          <h2 class="series-overview__title" id="overview-title">ملخص ${contentLabel}</h2>
+          <h2 class="series-overview__title" id="overview-title">${summaryTitle}</h2>
           <p class="series-overview__description">${safeDescription}</p>
         </div>
         <div class="series-facts" aria-label="تفاصيل المسلسل">
@@ -125,8 +131,7 @@
       <section class="series-episodes" id="episodes" aria-labelledby="episodes-title">
         <div class="series-episodes__head">
           <div>
-            <p class="series-section-kicker">تابع الآن</p>
-            <h2 class="series-episodes__title" id="episodes-title">${cartoon.content_type === "movie" ? "المشاهدة" : (seasons.length === 1 ? "الموسم الأول" : "المواسم والحلقات")}</h2>
+            <h2 class="series-episodes__title" id="episodes-title">${cartoon.content_type === "movie" ? "المشاهدة" : (seasons.length === 1 ? (primarySeason?.title || "موسم واحد") : "المواسم والحلقات")}</h2>
           </div>
           <span class="series-episodes__count">${seasons.length ? `${seasons.length} موسم` : "لا توجد مواسم"}</span>
         </div>
@@ -143,11 +148,28 @@
             <div class="season-showcase" id="season-showcase" aria-live="polite"></div>
             <div class="episodes-list" id="episodes-list" aria-live="polite"><div class="spinner"></div></div>`}
       </section>
+
+      <section class="series-similar" id="similar" aria-labelledby="similar-title">
+        <div class="series-similar__head">
+          <h2 class="series-similar__title" id="similar-title">قد يعجبك أيضًا</h2>
+          <a class="section__link" href="search.html?type=${cartoon.content_type === "movie" ? "movies" : "series"}">عرض الكل</a>
+        </div>
+        <div class="grid series-similar__grid" id="similar-grid" aria-live="polite"><div class="spinner"></div></div>
+      </section>
     </div>
   `;
 
   // ---------- قائمتي: تحفظ على الجهاز وتبقى بعد إغلاق المتصفح ----------
   const bookmarkButton = document.getElementById("series-bookmark");
+  const similarGrid = document.getElementById("similar-grid");
+
+  document.querySelectorAll(".series-anchor-tabs a").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".series-anchor-tabs a").forEach((item) => item.classList.remove("is-active"));
+      tab.classList.add("is-active");
+    });
+  });
+
   bookmarkButton?.addEventListener("click", () => {
     const added = toggleMyList(cartoon);
     bookmarkButton.setAttribute("aria-pressed", String(added));
@@ -155,6 +177,35 @@
     bookmarkButton.querySelector("span[aria-hidden='true']").textContent = added ? "✓" : "🔖";
     bookmarkButton.querySelector("span:last-child").textContent = added ? "أضيفت إلى قائمتي" : "أضف إلى قائمتي";
   });
+
+  // ---------- محتوى مشابه ----------
+  async function loadSimilar() {
+    if (!similarGrid) return;
+    const { data, error } = await sb
+      .from(TABLES.cartoons)
+      .select("id, title, poster_url, release_year, status, views, category_id, content_type")
+      .eq("content_type", cartoon.content_type || "series")
+      .neq("id", cartoonId)
+      .order("views", { ascending: false })
+      .limit(8);
+
+    if (error || !(data || []).length) {
+      similarGrid.innerHTML = `<div class="empty-box">لا يوجد محتوى مشابه متاح حاليًا</div>`;
+      return;
+    }
+
+    const allCategories = await getCartoonCategories(data);
+    const currentCategoryIds = new Set(categories.map((category) => category.id));
+    const sorted = [...data].sort((first, second) => {
+      const firstScore = (allCategories.get(first.id) || []).filter((category) => currentCategoryIds.has(category.id)).length;
+      const secondScore = (allCategories.get(second.id) || []).filter((category) => currentCategoryIds.has(category.id)).length;
+      return secondScore - firstScore || (second.views || 0) - (first.views || 0);
+    });
+
+    similarGrid.innerHTML = sorted
+      .map((item) => cartoonCard(item, allCategories.get(item.id) || []))
+      .join("");
+  }
 
   // ---------- تحميل حلقات الموسم ----------
   const episodesList = document.getElementById("episodes-list");
@@ -214,6 +265,7 @@
     if (primarySeason) loadEpisodes(primarySeason.id);
   });
 
-  // ---------- تحميل حلقات أول موسم ----------
+  // ---------- تحميل المحتوى والحلقات الأولية ----------
+  loadSimilar();
   if (primarySeason) loadEpisodes(primarySeason.id);
 })();
