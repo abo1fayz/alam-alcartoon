@@ -1168,3 +1168,27 @@ body {
   .app-bottom-nav__item { border-radius: 12px; }
   .app-bottom-nav__label { font-size: .61rem; }
 }
+
+/* ===== Smaller recommendation posters — بطاقات اقتراح أكثر كثافة ===== */
+@media (max-width: 767px) {
+  .home-content-row > .card,
+  .home-content-row > .skeleton-card {
+    flex-basis: clamp(116px, 35.5vw, 136px);
+  }
+
+  .home-content-row {
+    gap: 8px;
+    padding-bottom: 6px;
+  }
+
+  .home-content-row .card { border-radius: 14px; }
+  .home-content-row .card__body { padding: 7px 7px 8px; }
+  .home-content-row .card__title { font-size: .76rem; }
+  .home-content-row .card__meta { font-size: .58rem; }
+  .home-content-row .card__badge {
+    top: 6px;
+    inset-inline-start: 6px;
+    padding: 2px 6px;
+    font-size: .54rem;
+  }
+}
