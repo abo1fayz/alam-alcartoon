@@ -768,3 +768,93 @@
     linear-gradient(180deg, rgba(7, 5, 3, .05) 0%, rgba(7, 5, 3, .46) 52%, #050403 100%),
     linear-gradient(90deg, rgba(5, 4, 3, .18), transparent 68%);
 }
+
+/* ===== Compact professional polish — صفحة المسلسل ===== */
+@media (max-width: 767px) {
+  .series-page { padding-bottom: 8px; }
+  .series-cinematic-hero { min-height: clamp(286px, 37svh, 338px); }
+  .series-cinematic-hero__inner { padding: 0 14px 18px; }
+  .series-cinematic-hero__eyebrow { margin-bottom: 5px; font-size: .69rem; }
+  .series-cinematic-hero__title {
+    margin-bottom: 5px;
+    font-size: clamp(1.58rem, 7.7vw, 2rem);
+    line-height: 1.08;
+  }
+  .series-cinematic-hero__meta {
+    gap: 4px 7px;
+    margin-bottom: 11px;
+    font-size: .72rem;
+  }
+  .series-cinematic-hero__meta span:not(:last-child)::after { margin-inline-start: 7px; }
+  .series-cinematic-hero__actions { gap: 7px; }
+  .series-cinematic-hero__actions .btn {
+    min-height: 43px;
+    padding-inline: 12px;
+    border-radius: 11px;
+    font-size: .78rem;
+  }
+
+  .series-anchor-tabs {
+    gap: 18px;
+    padding: 11px 14px 2px;
+    scroll-padding-inline: 14px;
+  }
+  .series-anchor-tabs a { padding-bottom: 9px; font-size: .76rem; }
+
+  .series-content { padding: 22px 14px 14px; }
+  .series-overview { margin-bottom: 27px; }
+  .series-section-kicker { gap: 7px; margin-bottom: 7px; font-size: .7rem; }
+  .series-section-kicker::before { width: 22px; height: 2px; }
+  .series-overview__title {
+    margin-bottom: 9px;
+    font-size: clamp(1.42rem, 6.8vw, 1.78rem);
+  }
+  .series-overview__description {
+    font-size: .88rem;
+    line-height: 1.78;
+  }
+  .series-facts {
+    gap: 7px;
+    margin: 15px -14px 0;
+    padding: 0 14px 4px;
+    scroll-padding-inline: 14px;
+  }
+  .series-fact { min-width: 96px; padding: 8px 9px; border-radius: 10px; }
+  .series-fact__label { font-size: .62rem; }
+  .series-fact__value { font-size: .72rem; }
+
+  .series-gallery {
+    gap: 8px;
+    margin: 0 -14px 30px;
+    padding: 0 14px 4px;
+    scroll-padding-inline: 14px;
+  }
+  .series-gallery__item { flex-basis: min(48vw, 184px); border-radius: 10px; }
+
+  .series-episodes__head { margin-bottom: 11px; }
+  .series-episodes__title { font-size: 1.35rem; }
+  .series-episodes__count { font-size: .7rem; }
+  .series-page .seasons-tabs {
+    gap: 6px;
+    margin: 0 -14px 12px;
+    padding: 0 14px 4px;
+    scroll-padding-inline: 14px;
+  }
+  .series-page .season-tab { min-height: 34px; padding: 6px 11px; font-size: .71rem; }
+  .season-showcase {
+    width: min(100%, 184px);
+    margin: 15px auto 19px;
+    border-radius: 11px;
+  }
+  .season-showcase__image { border-radius: 11px; box-shadow: 0 10px 23px rgba(0, 0, 0, .34); }
+  .series-page .episodes-list { gap: 8px; }
+  .series-page .episode-row { min-height: 76px; padding: 6px; border-radius: 12px; }
+  .series-page .episode-row__thumb { width: 90px; border-radius: 8px; }
+  .series-page .episode-row__num { font-size: .65rem; }
+  .series-page .episode-row__title { font-size: .8rem; }
+  .series-page .episode-row__play { width: 34px; height: 34px; }
+  .series-similar { margin-top: 29px; }
+  .series-similar__head { margin-bottom: 10px; }
+  .series-similar__title { font-size: 1.08rem; }
+  .series-similar__title::before { width: 3px; height: 15px; margin-inline-end: 7px; }
+}

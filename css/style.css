@@ -1083,3 +1083,88 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .home-content-row { scroll-snap-type: none; }
 }
+
+/* ===== Compact professional polish — واجهة أكثر كثافة على الهاتف ===== */
+@media (max-width: 767px) {
+  .navbar__brand { font-size: 1.05rem; }
+  .home-main { padding: 0 12px 18px; }
+
+  .hero--home {
+    min-height: min(58svh, 455px);
+    margin: 0 -12px 15px;
+    border-radius: 0 0 22px 22px;
+    box-shadow: 0 12px 26px rgba(0, 0, 0, .36);
+  }
+  .hero--home .hero__content { padding: 17px 16px 20px; }
+  .hero--home .hero__title {
+    margin-bottom: 4px;
+    font-size: clamp(1.78rem, 8.1vw, 2.24rem);
+    line-height: 1.1;
+  }
+  .hero--home .hero__desc {
+    margin-bottom: 9px;
+    font-size: .8rem;
+    line-height: 1.58;
+  }
+  .hero--home .hero__tags { gap: 5px; margin-bottom: 10px; }
+  .hero--home .hero__tags span { padding: 3px 8px; font-size: .65rem; }
+  .hero--home .hero__actions { gap: 7px; }
+  .hero--home .hero__actions .btn {
+    min-height: 44px;
+    padding: 8px 13px;
+    border-radius: 11px;
+    font-size: .82rem;
+  }
+
+  .home-content-tabs {
+    margin: 0 -12px 20px;
+    padding: 0 12px 4px;
+    scroll-padding-inline: 12px;
+  }
+  .home-content-tabs a {
+    min-height: 33px;
+    padding-inline: 12px;
+    font-size: .75rem;
+  }
+  .section--home { margin-bottom: 27px; }
+  .section--home .section__head { margin-bottom: 10px; }
+  .section--home .section__title { font-size: 1.06rem; }
+  .section--home .section__link { font-size: .72rem; }
+
+  .home-content-row {
+    gap: 9px;
+    margin-inline: -12px;
+    padding: 1px 12px 7px;
+    scroll-padding-inline: 12px;
+  }
+  .home-content-row > .card,
+  .home-content-row > .skeleton-card { flex-basis: clamp(132px, 40.5vw, 154px); }
+  .card {
+    border-radius: 16px;
+    box-shadow: 0 9px 20px rgba(0, 0, 0, .24);
+  }
+  .card__badge {
+    top: 7px;
+    inset-inline-start: 7px;
+    padding: 3px 7px;
+    font-size: .59rem;
+  }
+  .card__body { padding: 8px 8px 9px; }
+  .card__title { font-size: .82rem; line-height: 1.35; }
+  .card__meta { margin-top: 3px; font-size: .62rem; }
+
+  .cats-grid {
+    gap: 7px;
+    margin-inline: -12px;
+    padding: 0 12px 5px;
+    scroll-padding-inline: 12px;
+  }
+  .cat-chip { min-height: 35px; padding: 0 12px; font-size: .74rem; }
+
+  .app-bottom-nav {
+    height: calc(64px + env(safe-area-inset-bottom));
+    padding: 5px 7px calc(5px + env(safe-area-inset-bottom));
+  }
+  .app-bottom-nav__item { border-radius: 12px; }
+  .app-bottom-nav__label { font-size: .61rem; }
+}

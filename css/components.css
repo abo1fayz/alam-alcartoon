@@ -374,3 +374,44 @@ body.welcome-open { overflow: hidden; }
   background: linear-gradient(110deg, #833ab4, #c13584 48%, #fd1d1d 100%);
   border-color: rgba(255, 208, 234, .5);
 }
+
+/* ===== Compact professional polish — شاشة الترحيب ===== */
+@media (max-width: 767px) {
+  .welcome-overlay__content {
+    width: min(100%, 500px);
+    padding: 18px 16px 20px;
+  }
+  .welcome-overlay__brand { gap: 8px; font-size: 1.04rem; }
+  .welcome-overlay__brand-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
+    box-shadow: 0 6px 16px rgba(255, 121, 0, .3);
+  }
+  .welcome-overlay__message {
+    width: min(91%, 305px);
+    margin-top: 2vh;
+    padding: 13px 15px;
+    border-width: 2px;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .22);
+    font-size: .9rem;
+    line-height: 1.62;
+  }
+  .welcome-overlay__actions { width: min(100%, 330px); gap: 8px; }
+  .welcome-overlay__button {
+    min-height: 47px;
+    padding: 9px 16px;
+    border-radius: 13px;
+    box-shadow: 0 6px 0 rgba(111, 41, 0, .34), 0 9px 20px rgba(255, 121, 0, .19);
+    font-size: .94rem;
+  }
+  .welcome-overlay__hint { font-size: .69rem; }
+  .welcome-overlay__contact-options { gap: 6px; }
+  .welcome-overlay__contact-link {
+    min-height: 41px;
+    padding: 7px 11px;
+    border-radius: 11px;
+    font-size: .76rem;
+  }
+}
