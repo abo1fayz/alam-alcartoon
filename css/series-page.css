@@ -345,3 +345,52 @@
   .series-gallery__item img,
   .series-page .episode-row { transition: none; }
 }
+
+
+/* غلاف الموسم الموحد */
+.season-showcase {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 20px 0 14px;
+  padding: 10px;
+  border: 1px solid rgba(255, 138, 0, .2);
+  border-radius: 18px;
+  background: linear-gradient(115deg, rgba(255, 138, 0, .11), rgba(38, 25, 16, .66));
+}
+.season-showcase__image {
+  width: 164px;
+  aspect-ratio: 16 / 9;
+  flex: 0 0 auto;
+  object-fit: cover;
+  border-radius: 12px;
+  background: var(--bg-3);
+}
+.season-showcase__copy {
+  display: grid;
+  gap: 5px;
+  color: var(--text-dim);
+  font-size: .87rem;
+  line-height: 1.65;
+}
+.season-showcase__copy strong { color: var(--text); font-size: 1.04rem; }
+.season-showcase__eyebrow { color: var(--accent); font-size: .74rem; font-weight: 800; }
+
+@media (max-width: 767px) {
+  .series-cinematic-hero { min-height: 420px; }
+  .series-cinematic-hero__inner { padding: 0 16px 25px; }
+  .series-cinematic-hero__actions { gap: 9px; }
+  .series-cinematic-hero__actions .btn { min-height: 48px; }
+  .series-content { padding: 0 14px 20px; }
+  .series-overview, .series-episodes { border-radius: 20px; }
+  .series-episodes { padding: 18px 14px; }
+  .season-showcase { gap: 11px; margin: 17px 0 13px; padding: 8px; border-radius: 15px; }
+  .season-showcase__image { width: 112px; border-radius: 10px; }
+  .season-showcase__copy { font-size: .78rem; }
+  .season-showcase__copy strong { font-size: .94rem; }
+}
+
+@media (max-width: 374px) {
+  .season-showcase__image { width: 94px; }
+  .season-showcase__copy { font-size: .73rem; }
+}

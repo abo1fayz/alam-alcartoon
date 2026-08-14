@@ -26,9 +26,9 @@
     .from(TABLES.episodes)
     .select(`
       id, title, description, vk_video_id, views,
-      thumbnail_url, episode_number, updated_at,
+      episode_number, updated_at,
       seasons!inner (
-        id, season_number,
+        id, season_number, image_url,
         cartoons!inner ( id, title )
       )
     `)
@@ -51,7 +51,7 @@
 
   const { data: allEpisodes } = await sb
     .from(TABLES.episodes)
-    .select("id, title, episode_number, views, thumbnail_url")
+    .select("id, title, episode_number, views")
     .eq("season_id", season.id)
     .order("episode_number", { ascending: true });
 
@@ -94,7 +94,7 @@
       <div class="episodes-list">
         ${sorted
           .map((ep) =>
-            episodeRow({ ...ep }).replace(
+            episodeRow({ ...ep }, season.image_url || "").replace(
               "episode-row\"",
               `episode-row ${ep.id === episodeId ? "is-current" : ""}\"`
             )

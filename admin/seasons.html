@@ -83,6 +83,17 @@
           <input class="input" id="f-title" maxlength="200" placeholder="الموسم الأول">
         </div>
 
+        <div class="field">
+          <label class="field__label" for="f-season-image-file">صورة الموسم الموحدة</label>
+          <label class="upload-zone" for="f-season-image-file">
+            <input id="f-season-image-file" type="file" accept="image/*">
+            <span>اضغط لاختيار صورة الغلاف</span>
+          </label>
+          <p class="field__hint">تظهر هذه الصورة مع جميع حلقات هذا الموسم، بدلًا من رفع صورة لكل حلقة.</p>
+          <input class="input" id="f-season-image-url" type="url" placeholder="أو الصق رابط صورة مباشرًا (اختياري)">
+          <img class="preview-img preview-img--season" id="f-season-image-preview" src="" alt="معاينة صورة الموسم" style="display:none">
+        </div>
+
         <div class="modal__actions">
           <button class="btn btn--primary" type="submit" id="save-btn">حفظ</button>
           <button class="btn btn--ghost" type="button" data-close>إلغاء</button>
@@ -95,6 +106,6 @@
   <script src="js/supabase.js?v=v2-content-types"></script>
   <script src="js/admin.js?v=v2-direct-media"></script>
   <script src="js/auth.js?v=1"></script>
-  <script src="js/seasons.js?v=v2-content-labels"></script>
+  <script src="js/seasons.js?v=v3-season-images"></script>
 </body>
 </html>

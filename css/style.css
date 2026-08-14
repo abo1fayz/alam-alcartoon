@@ -573,3 +573,185 @@ ul { list-style: none; }
   animation: spin .8s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+
+/* ============================================================
+   تجربة الهاتف — Android-inspired Mobile First shell
+   ============================================================ */
+.app-bottom-nav { display: none; }
+
+@media (max-width: 767px) {
+  :root {
+    --header-h: 64px;
+    --radius: 18px;
+    --shadow: 0 10px 28px rgba(0, 0, 0, .32);
+  }
+
+  html { background: #100c09; }
+  body {
+    min-height: 100dvh;
+    padding-bottom: calc(78px + env(safe-area-inset-bottom));
+    background:
+      radial-gradient(circle at 84% -10%, rgba(255, 121, 0, .12), transparent 31%),
+      linear-gradient(180deg, #160e09 0%, var(--bg) 34%, #0e0a08 100%);
+  }
+
+  .navbar {
+    height: calc(var(--header-h) + env(safe-area-inset-top));
+    padding: env(safe-area-inset-top) 14px 0;
+    gap: 10px;
+    background: rgba(22, 14, 9, .88);
+    border-bottom-color: rgba(117, 68, 35, .48);
+    box-shadow: 0 5px 18px rgba(0, 0, 0, .13);
+  }
+  .navbar__brand { gap: 9px; font-size: 1.08rem; }
+  .navbar__brand img { width: 34px; height: 34px; border-radius: 11px; }
+  .navbar__actions { gap: 6px; }
+  .btn-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    background: rgba(255, 255, 255, .055);
+    border-color: rgba(170, 101, 51, .42);
+  }
+
+  .mobile-menu__panel {
+    width: min(320px, 88vw);
+    padding: calc(22px + env(safe-area-inset-top)) 18px 20px;
+    border-inline-start-color: rgba(255, 121, 0, .24);
+    background: #1c120c;
+    box-shadow: -18px 0 40px rgba(0, 0, 0, .34);
+  }
+  .mobile-menu__panel a {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: 14px;
+  }
+  .mobile-menu__panel a:hover,
+  .mobile-menu__panel a:active { background: rgba(255, 121, 0, .11); border-color: rgba(255, 121, 0, .22); }
+
+  .container { padding: 18px 14px 24px; }
+  .hero {
+    min-height: 350px;
+    margin-bottom: 30px;
+    border-radius: 22px;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, .3);
+  }
+  .hero__overlay {
+    background: linear-gradient(to top, rgba(14, 10, 8, .98) 0%, rgba(14, 10, 8, .55) 46%, rgba(14, 10, 8, .12) 100%);
+  }
+  .hero__content { padding: 22px 18px; }
+  .hero__title { font-size: clamp(1.65rem, 7vw, 2rem); line-height: 1.25; }
+  .hero__desc { font-size: .9rem; line-height: 1.75; }
+  .hero__actions .btn { min-height: 48px; }
+
+  .section { margin-bottom: 32px; }
+  .section__head { margin-bottom: 13px; }
+  .section__title { font-size: 1.15rem; padding-inline-start: 9px; }
+  .section__link { padding: 7px 2px; }
+  .grid { gap: 11px; }
+  .card {
+    border-color: rgba(125, 73, 38, .6);
+    border-radius: 17px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, .16);
+  }
+  .card:active { transform: scale(.975); border-color: var(--accent); }
+  .card__img-wrap { border-bottom: 1px solid rgba(125, 73, 38, .4); }
+  .card__badge {
+    top: 7px;
+    inset-inline-start: 7px;
+    padding: 4px 8px;
+    background: rgba(18, 12, 8, .8);
+    backdrop-filter: blur(7px);
+  }
+  .card__body { padding: 10px 10px 11px; }
+  .card__title { font-size: .92rem; margin-bottom: 5px; }
+  .card__meta { gap: 5px; font-size: .71rem; }
+
+  .search-box { gap: 8px; margin-bottom: 20px; }
+  .search-box__input { min-height: 50px; padding: 13px 14px; border-radius: 15px; }
+  .search-box__btn { min-width: 50px; padding: 0 14px; border-radius: 15px; }
+  .result-item { padding: 10px; gap: 12px; border-radius: 16px; }
+  .result-item__img { width: 72px; border-radius: 12px; }
+
+  .seasons-tabs { margin-inline: -14px; padding-inline: 14px; scroll-padding-inline: 14px; }
+  .season-tab { min-height: 44px; border-radius: 13px; }
+  .episode-row {
+    min-height: 92px;
+    gap: 10px;
+    padding: 7px;
+    border-color: rgba(125, 73, 38, .58);
+    border-radius: 16px;
+    background: linear-gradient(120deg, rgba(42, 28, 18, .94), rgba(25, 17, 12, .98));
+  }
+  .episode-row:active { transform: scale(.985); border-color: var(--accent); }
+  .episode-row__thumb { width: 104px; border-radius: 11px; }
+  .episode-row__title { font-size: .92rem; }
+  .episode-row__play { width: 40px; height: 40px; margin-inline-start: 2px; }
+
+  .player-wrap { margin-inline: -14px; width: calc(100% + 28px); border-radius: 0; }
+  .episode-info { padding-top: 4px; }
+  .episode-info__title { font-size: 1.28rem; line-height: 1.4; }
+  .nav-episodes { gap: 8px; }
+  .nav-episodes .btn { min-height: 46px; padding-inline: 10px; font-size: .88rem; }
+
+  .footer {
+    padding: 22px 16px 12px;
+    margin-bottom: 3px;
+    border-top-color: rgba(125, 73, 38, .42);
+  }
+
+  .app-bottom-nav {
+    position: fixed;
+    z-index: 90;
+    inset-inline: 0;
+    bottom: 0;
+    height: calc(68px + env(safe-area-inset-bottom));
+    padding: 7px 10px calc(7px + env(safe-area-inset-bottom));
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: stretch;
+    background: rgba(28, 18, 12, .94);
+    border-top: 1px solid rgba(159, 91, 43, .46);
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, .28);
+    backdrop-filter: blur(18px);
+  }
+  .app-bottom-nav__item {
+    min-width: 0;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 2px;
+    border-radius: 14px;
+    color: var(--text-dim);
+    font-size: .66rem;
+    font-weight: 700;
+    transition: color .18s, background .18s, transform .18s;
+  }
+  .app-bottom-nav__item:active { transform: scale(.93); }
+  .app-bottom-nav__item.is-active { color: #fff4ea; background: rgba(255, 121, 0, .16); }
+  .app-bottom-nav__icon { width: 23px; height: 23px; display: grid; place-items: center; }
+  .app-bottom-nav__icon svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .app-bottom-nav__item.is-active .app-bottom-nav__icon svg { stroke-width: 2.3; }
+  .app-bottom-nav__label { white-space: nowrap; }
+}
+
+@media (max-width: 374px) {
+  .navbar__brand span { display: none; }
+  .grid { gap: 9px; }
+  .card__body { padding: 8px; }
+  .card__meta { font-size: .67rem; }
+  .episode-row__thumb { width: 90px; }
+  .app-bottom-nav { padding-inline: 6px; }
+  .app-bottom-nav__label { font-size: .61rem; }
+}
+
+@media (min-width: 768px) {
+  body { padding-bottom: 0; }
+}
+
+@media (hover: none) {
+  .card:hover, .episode-row:hover { transform: none; box-shadow: none; }
+}

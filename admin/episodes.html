@@ -105,16 +105,9 @@
           <div id="vk-status" class="vk-input-status" aria-live="polite"></div>
         </div>
 
-        <!-- Thumbnail -->
-        <div class="field">
-          <label class="field__label">Thumbnail (صورة مصغرة)</label>
-          <label class="upload-zone">
-            <input type="file" id="f-thumb-file" accept="image/*">
-            <div>📤 اضغط لاختيار صورة مصغرة</div>
-          </label>
-          <img class="preview-img" id="f-thumb-preview" style="display:none">
-          <input type="hidden" id="f-thumb-url">
-          <small style="color:var(--text-dim)">يتم رفعها إلى Supabase Storage عند الحفظ</small>
+        <div class="season-cover-notice" role="note">
+          <strong>صورة الموسم الموحدة</strong>
+          <span>لا تحتاج إلى رفع صورة لهذه الحلقة. غلاف الموسم المختار سيظهر تلقائيًا مع جميع حلقاته. يمكنك تغييره من صفحة <a href="seasons.html">المواسم</a>.</span>
         </div>
 
         <div class="modal__actions">
@@ -129,6 +122,6 @@
   <script src="js/supabase.js?v=v2-content-types"></script>
   <script src="js/admin.js?v=v2-direct-media"></script>
   <script src="js/auth.js?v=1"></script>
-  <script src="js/episodes.js?v=v2-direct-media-content"></script>
+  <script src="js/episodes.js?v=v3-season-cover"></script>
 </body>
 </html>

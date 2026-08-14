@@ -36,11 +36,13 @@ function cartoonCard(c, categories = []) {
 }
 
 // ---------- بناء بطاقة حلقة (قائمة) ----------
-function episodeRow(ep) {
+// تستخدم صورة الموسم الموحدة، مع إبقاء الصورة القديمة كخيار توافق فقط.
+function episodeRow(ep, seasonImageUrl = "") {
+  const artwork = seasonImageUrl || ep.season_image_url || ep.thumbnail_url || "";
   return `
     <a class="episode-row" href="watch.html?id=${ep.id}">
-      <img class="episode-row__thumb" src="${ep.thumbnail_url || ""}"
-           alt="${esc(ep.title)}" loading="lazy"
+      <img class="episode-row__thumb" src="${esc(artwork)}"
+           alt="غلاف ${esc(ep.title || `الحلقة ${ep.episode_number}`)}" loading="lazy"
            onerror="handleImageError(this)">
       <div class="episode-row__info">
         <span class="episode-row__num">الحلقة ${ep.episode_number}</span>
@@ -282,6 +284,47 @@ if (document.readyState === "loading") {
   initWelcomeScreen();
 }
 
+// ---------- شريط التنقل السفلي لتجربة تطبيق الهاتف ----------
+function initAppBottomNav() {
+  if (!document.body || document.querySelector(".app-bottom-nav")) return;
+
+  const page = location.pathname.split("/").pop() || "index.html";
+  const type = new URLSearchParams(location.search).get("type");
+  const active = type === "movies" ? "movies"
+    : type === "series" ? "series"
+    : type === "my-list" ? "my-list"
+    : page === "index.html" ? "home"
+    : "";
+
+  const icon = (name) => ({
+    home: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.7 12 3l9 7.7v9.8a.5.5 0 0 1-.5.5h-5.2v-6.5H8.7V21H3.5a.5.5 0 0 1-.5-.5z"/></svg>`,
+    series: `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="m10 8 5 4-5 4z"/></svg>`,
+    movies: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"/><path d="M7 5v14M17 5v14M2 10h20"/></svg>`,
+    list: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h13M6 12h13M6 19h13"/><circle cx="3" cy="5" r="1"/><circle cx="3" cy="12" r="1"/><circle cx="3" cy="19" r="1"/></svg>`,
+  })[name];
+
+  const items = [
+    { id: "home", label: "الرئيسية", href: "index.html", icon: icon("home") },
+    { id: "series", label: "المسلسلات", href: "search.html?type=series", icon: icon("series") },
+    { id: "movies", label: "الأفلام", href: "search.html?type=movies", icon: icon("movies") },
+    { id: "my-list", label: "قائمتي", href: "search.html?type=my-list", icon: icon("list") },
+  ];
+
+  document.body.insertAdjacentHTML("beforeend", `
+    <nav class="app-bottom-nav" aria-label="التنقل الرئيسي">
+      ${items.map((item) => `
+        <a class="app-bottom-nav__item ${active === item.id ? "is-active" : ""}" href="${item.href}" ${active === item.id ? 'aria-current="page"' : ""}>
+          <span class="app-bottom-nav__icon">${item.icon}</span>
+          <span class="app-bottom-nav__label">${item.label}</span>
+        </a>`).join("")}
+    </nav>`);
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initAppBottomNav, { once: true });
+} else {
+  initAppBottomNav();
+}
 
 // ---------- تحليل روابط الفيديو في الموقع العام ----------
 function parseYouTubeReference(input) {

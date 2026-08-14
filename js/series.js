@@ -50,7 +50,7 @@
   // ---------- تحميل المواسم ----------
   const { data: seasons, error: seasonsError } = await sb
     .from(TABLES.seasons)
-    .select("id, season_number, title")
+    .select("id, season_number, title, image_url")
     .eq("cartoon_id", cartoonId)
     .order("season_number", { ascending: true });
 
@@ -140,6 +140,7 @@
                   ${esc(season.title || `الموسم ${season.season_number}`)}
                 </button>`).join("")}
             </div>
+            <div class="season-showcase" id="season-showcase" aria-live="polite"></div>
             <div class="episodes-list" id="episodes-list" aria-live="polite"><div class="spinner"></div></div>`}
       </section>
     </div>
@@ -158,13 +159,31 @@
   // ---------- تحميل حلقات الموسم ----------
   const episodesList = document.getElementById("episodes-list");
 
+  function renderSeasonShowcase(seasonId) {
+    const showcase = document.getElementById("season-showcase");
+    const season = seasons.find((item) => item.id === seasonId);
+    if (!showcase || !season) return;
+
+    const cover = season.image_url || cartoon.poster_url || cartoon.banner_url || "assets/images/placeholder-poster.svg";
+    showcase.innerHTML = `
+      <img class="season-showcase__image" src="${esc(cover)}" alt="غلاف ${esc(season.title || `الموسم ${season.season_number}`)}" onerror="handleImageError(this)">
+      <div class="season-showcase__copy">
+        <span class="season-showcase__eyebrow">غلاف الموسم</span>
+        <strong>${esc(season.title || `الموسم ${season.season_number}`)}</strong>
+        <span>صورة موحدة لجميع حلقات هذا الموسم</span>
+      </div>`;
+  }
+
   async function loadEpisodes(seasonId) {
     if (!episodesList) return;
+    const season = seasons.find((item) => item.id === seasonId);
+    const seasonCover = season?.image_url || cartoon.poster_url || cartoon.banner_url || "";
+    renderSeasonShowcase(seasonId);
     episodesList.innerHTML = `<div class="spinner"></div>`;
 
     const { data, error } = await sb
       .from(TABLES.episodes)
-      .select("id, title, episode_number, views, thumbnail_url, description")
+      .select("id, title, episode_number, views, description")
       .eq("season_id", seasonId)
       .order("episode_number", { ascending: true });
 
@@ -173,7 +192,7 @@
       return;
     }
 
-    episodesList.innerHTML = data.map((episode) => episodeRow(episode)).join("")
+    episodesList.innerHTML = data.map((episode) => episodeRow(episode, seasonCover)).join("")
       || `<div class="empty-box">لا توجد حلقات في هذا الموسم</div>`;
   }
 

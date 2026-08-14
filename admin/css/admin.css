@@ -194,6 +194,7 @@ tr:last-child td { border-bottom: none; }
 
 .field { display: flex; flex-direction: column; gap: 6px; }
 .field__label { font-size: .85rem; font-weight: 700; color: var(--text-dim); }
+.field__hint { color: var(--text-dim); font-size: .78rem; line-height: 1.65; }
 
 .input, .textarea, .select {
   padding: 12px 14px;
@@ -240,6 +241,27 @@ tr:last-child td { border-bottom: none; }
   border-radius: 8px;
   border: 1px solid var(--border);
 }
+.preview-img--season {
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.preview-thumb--season { width: 72px; height: 44px; }
+
+.season-cover-notice {
+  display: grid;
+  gap: 4px;
+  padding: 13px 14px;
+  border: 1px solid rgba(255, 121, 0, .32);
+  border-radius: 12px;
+  background: rgba(255, 121, 0, .07);
+  color: var(--text-dim);
+  font-size: .84rem;
+  line-height: 1.65;
+}
+.season-cover-notice strong { color: var(--accent); }
+.season-cover-notice a { color: var(--accent); font-weight: 700; text-decoration: underline; }
 
 /* ---------- نافذة Modal ---------- */
 .modal {
