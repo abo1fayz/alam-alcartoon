@@ -1044,3 +1044,42 @@ body {
   .card,
   .card__img-wrap::after { transition: none; }
 }
+
+/* ===== صفوف المحتوى الأفقية في الصفحة الرئيسية ===== */
+.home-content-row {
+  display: flex;
+  grid-template-columns: none;
+  gap: 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1px 1px 12px;
+  scrollbar-width: none;
+  scroll-snap-type: inline proximity;
+  scroll-padding-inline: 2px;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+}
+.home-content-row::-webkit-scrollbar { display: none; }
+.home-content-row > .card,
+.home-content-row > .skeleton-card {
+  flex: 0 0 clamp(152px, 18vw, 205px);
+  min-width: 0;
+  scroll-snap-align: start;
+}
+.home-content-row > .empty-box,
+.home-content-row > .error-box { flex: 0 0 100%; }
+
+@media (max-width: 767px) {
+  .home-content-row {
+    gap: 11px;
+    margin-inline: -14px;
+    padding: 1px 14px 12px;
+    scroll-padding-inline: 14px;
+  }
+  .home-content-row > .card,
+  .home-content-row > .skeleton-card { flex-basis: clamp(138px, 43vw, 164px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-content-row { scroll-snap-type: none; }
+}
