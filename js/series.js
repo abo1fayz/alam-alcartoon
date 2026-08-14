@@ -62,7 +62,9 @@
 
   const safeTitle = esc(cartoon.title || "محتوى كرتوني");
   const safeDescription = esc(cartoon.description || "لا يتوفر ملخص لهذا المحتوى بعد.");
-  const backdrop = cartoon.banner_url || cartoon.poster_url || "assets/images/placeholder-poster.svg";
+  // لا يُستخدم البوستر كخلفية للبطل: البانر يجب أن يكون صورة عرضية فقط.
+  const backdrop = cartoon.banner_url || "";
+  const hasBackdrop = Boolean(backdrop);
   const mediaImages = [...new Set([cartoon.banner_url, cartoon.poster_url].filter(Boolean))];
   const hasSaved = isInMyList(cartoonId);
   const primarySeason = seasons?.[0];
@@ -74,8 +76,8 @@
   // ---------- بناء الصفحة ----------
   pageEl.className = "series-page";
   pageEl.innerHTML = `
-    <section class="series-cinematic-hero" aria-labelledby="series-title">
-      <img class="series-cinematic-hero__backdrop" src="${esc(backdrop)}" alt="" onerror="handleImageError(this)">
+    <section class="series-cinematic-hero ${hasBackdrop ? "" : "series-cinematic-hero--no-backdrop"}" aria-labelledby="series-title">
+      ${hasBackdrop ? `<img class="series-cinematic-hero__backdrop" src="${esc(backdrop)}" alt="">` : ""}
       <div class="series-cinematic-hero__shade"></div>
       <div class="series-cinematic-hero__vignette"></div>
 
@@ -158,6 +160,24 @@
       </section>
     </div>
   `;
+
+  // ---------- حماية البانر: تُزال أي صورة غير عرضية أو فاشلة ----------
+  const cinematicHero = pageEl.querySelector(".series-cinematic-hero");
+  const backdropImage = pageEl.querySelector(".series-cinematic-hero__backdrop");
+  const enforceLandscapeBackdrop = () => {
+    if (!backdropImage) return;
+    const ratio = backdropImage.naturalWidth / backdropImage.naturalHeight;
+    if (!Number.isFinite(ratio) || ratio < 1.2) {
+      cinematicHero?.classList.add("series-cinematic-hero--no-backdrop");
+      backdropImage.remove();
+    }
+  };
+  backdropImage?.addEventListener("load", enforceLandscapeBackdrop, { once: true });
+  backdropImage?.addEventListener("error", () => {
+    cinematicHero?.classList.add("series-cinematic-hero--no-backdrop");
+    backdropImage.remove();
+  }, { once: true });
+  if (backdropImage?.complete) enforceLandscapeBackdrop();
 
   // ---------- قائمتي: تحفظ على الجهاز وتبقى بعد إغلاق المتصفح ----------
   const bookmarkButton = document.getElementById("series-bookmark");

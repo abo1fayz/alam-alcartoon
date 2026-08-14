@@ -560,7 +560,8 @@
 @media (max-width: 767px) {
   .series-page { padding-bottom: 14px; }
   .series-cinematic-hero {
-    min-height: min(61svh, 520px);
+    /* بانر أقصر بصريًا على الهاتف حتى تبقى الخلفية عريضة لا طويلة. */
+    min-height: clamp(330px, 45svh, 405px);
     align-items: flex-end;
   }
   .series-cinematic-hero__inner {
@@ -750,4 +751,20 @@
   .series-similar { margin-top: 43px; }
   .series-similar__head { margin-bottom: 14px; }
   .series-similar__title { font-size: 1.25rem; }
+}
+
+/* لا تظهر صور البوستر العمودية داخل البانر السينمائي. */
+.series-cinematic-hero__backdrop {
+  object-position: center center;
+}
+.series-cinematic-hero--no-backdrop {
+  background:
+    radial-gradient(ellipse at 74% 18%, rgba(255, 121, 0, .18), transparent 42%),
+    radial-gradient(ellipse at 15% 74%, rgba(117, 53, 16, .23), transparent 48%),
+    linear-gradient(135deg, #1c1009 0%, #0b0806 47%, #050403 100%);
+}
+.series-cinematic-hero--no-backdrop .series-cinematic-hero__shade {
+  background:
+    linear-gradient(180deg, rgba(7, 5, 3, .05) 0%, rgba(7, 5, 3, .46) 52%, #050403 100%),
+    linear-gradient(90deg, rgba(5, 4, 3, .18), transparent 68%);
 }
