@@ -342,6 +342,22 @@ if (document.readyState === "loading") {
   initAppBottomNav();
 }
 
+// ---------- تفعيل شبكة الإعلانات عبر Service Worker ----------
+// يعمل التسجيل تلقائيًا في صفحات الموقع العامة فقط، ولا يؤثر على تشغيل الفيديو أو التنقل.
+function initAdServiceWorker() {
+  if (!("serviceWorker" in navigator)) return;
+
+  navigator.serviceWorker.register("./sw.js", { scope: "./" }).catch((error) => {
+    console.warn("تعذر تفعيل شبكة الإعلانات:", error);
+  });
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initAdServiceWorker, { once: true });
+} else {
+  initAdServiceWorker();
+}
+
 // ---------- تحليل روابط الفيديو في الموقع العام ----------
 function parseYouTubeReference(input) {
   const value = String(input || "").trim();
