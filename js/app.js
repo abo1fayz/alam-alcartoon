@@ -358,36 +358,6 @@ if (document.readyState === "loading") {
   initAdServiceWorker();
 }
 
-// ---------- تفعيل إعلانات Adsterra مرة واحدة لكل صفحة ----------
-const ADSTERRA_SOURCES = [
-  {
-    src: "https://pl30887873.effectivecpmnetwork.com/cb/70/c5/cb70c5cdbf35e9a8afcf016232e55a19.js",
-    key: "popunder-1",
-  },
-  {
-    src: "https://pl30887872.effectivecpmnetwork.com/e5/97/6e/e5976ee289f124180e99fde4af42b12c.js",
-    key: "socialbar-1",
-  },
-];
-
-function initAdsterraAds() {
-  if (!document.head) return;
-  ADSTERRA_SOURCES.forEach(({ src, key }) => {
-    if (document.querySelector(`script[data-adsterra="${key}"]`)) return;
-    const script = document.createElement("script");
-    script.src = src;
-    script.dataset.adsterra = key;
-    script.onerror = () => console.warn(`تعذر تحميل إعلان Adsterra: ${key}`);
-    document.head.appendChild(script);
-  });
-}
-
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initAdsterraAds, { once: true });
-} else {
-  initAdsterraAds();
-}
-
 // ---------- تحليل روابط الفيديو في الموقع العام ----------
 function parseYouTubeReference(input) {
   const value = String(input || "").trim();
