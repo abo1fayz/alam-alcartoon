@@ -1,6 +1,7 @@
 /* ============================================================
    style.css  — الأنماط الأساسية لموقع الكرتون
    Dark Mode · RTL · Mobile First
+   فلسفة الصفحة الرئيسية: «رفّ المشاهدة الداكن»؛ الصور أولاً والبرتقالي للتفعيل فقط.
    ============================================================ */
 
 /* ---------- المتغيرات ---------- */
@@ -1226,4 +1227,186 @@ body {
     border-radius: 10px;
     font-size: .76rem;
   }
+}
+
+/* ============================================================
+   Content shelf v2 — تكثيف واجهة الهاتف: تبويبات نصية، بانر أفقي، رفوف صور وشريط سفلي عائم
+   ============================================================ */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom));
+    background: #050504;
+  }
+
+  .navbar {
+    height: calc(54px + env(safe-area-inset-top));
+    padding: env(safe-area-inset-top) 18px 0;
+    background: #050504;
+    border-bottom: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+  .navbar__brand {
+    color: var(--accent);
+    font-size: 1.24rem;
+    letter-spacing: -.035em;
+  }
+  .home-main { padding: 0 0 28px; }
+
+  .home-content-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    margin: 0;
+    padding: 0 14px;
+    overflow: visible;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .home-content-tabs a {
+    position: relative;
+    min-height: 52px;
+    padding: 0 2px;
+    color: rgba(255,247,237,.67);
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    font-size: .92rem;
+    font-weight: 800;
+    box-shadow: none;
+  }
+  .home-content-tabs a::after {
+    content: "";
+    position: absolute;
+    inset-inline: 32%;
+    bottom: 0;
+    height: 3px;
+    border-radius: 3px 3px 0 0;
+    background: transparent;
+    transform: scaleX(.5);
+    transition: transform .18s var(--ease-out), background .18s var(--ease-out);
+  }
+  .home-content-tabs a.is-active,
+  .home-content-tabs a:hover {
+    color: #fff;
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+  }
+  .home-content-tabs a.is-active::after {
+    background: var(--accent);
+    transform: scaleX(1);
+  }
+
+  .hero--home {
+    min-height: clamp(248px, 62vw, 314px);
+    margin: 16px 14px 31px;
+    border-radius: 18px;
+    box-shadow: none;
+    background: #12100e;
+  }
+  .hero--home .hero__img { transform: none; }
+  .hero--home .hero__overlay {
+    background:
+      linear-gradient(180deg, rgba(0,0,0,.02) 26%, rgba(0,0,0,.16) 44%, rgba(0,0,0,.90) 100%),
+      linear-gradient(90deg, rgba(0,0,0,.12), transparent 70%);
+  }
+  .hero--home .hero__content { padding: 17px 17px 16px; }
+  .hero--home .hero__eyebrow,
+  .hero--home .hero__desc,
+  .hero--home .hero__tags,
+  .hero--home .btn--ghost { display: none; }
+  .hero--home .hero__title {
+    max-width: 78%;
+    margin: 0 0 3px;
+    font-size: clamp(1.48rem, 6.8vw, 1.9rem);
+    line-height: 1.17;
+    text-shadow: 0 3px 16px rgba(0,0,0,.68);
+  }
+  .hero--home .hero__meta {
+    gap: 5px 7px;
+    margin: 0 0 10px;
+    color: rgba(255,247,237,.7);
+    font-size: .75rem;
+  }
+  .hero--home .hero__meta span:not(:last-child)::after { margin-inline-start: 7px; }
+  .hero--home .hero__actions .btn {
+    min-height: 34px;
+    padding: 5px 10px;
+    border-radius: 9px;
+    font-size: .7rem;
+  }
+  .hero--home .btn--primary {
+    background: rgba(255,121,0,.95);
+    box-shadow: none;
+  }
+
+  .section--home { margin: 0 0 34px; }
+  .section--home .section__head {
+    margin-bottom: 12px;
+    padding: 0 16px;
+  }
+  .section--home .section__title {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 800;
+  }
+  .section--home .section__title::before { display: none; }
+  .section--home .section__link {
+    color: rgba(255,247,237,.72);
+    font-size: .82rem;
+    font-weight: 700;
+  }
+
+  .home-content-row {
+    gap: 12px;
+    margin: 0;
+    padding: 0 16px 3px;
+    scroll-padding-inline: 16px;
+  }
+  .home-content-row > .card,
+  .home-content-row > .skeleton-card {
+    flex-basis: clamp(142px, 42vw, 174px);
+  }
+  .home-content-row .card {
+    overflow: visible;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .home-content-row .card__img-wrap {
+    overflow: hidden;
+    border: 0;
+    border-radius: 12px;
+    background: #171512;
+    box-shadow: none;
+  }
+  .home-content-row .card__badge { display: none; }
+  .home-content-row .card__body { padding: 7px 1px 0; }
+  .home-content-row .card__title {
+    color: #f9f3ed;
+    font-size: .79rem;
+    font-weight: 700;
+  }
+  .home-content-row .card__meta { display: none; }
+  .home-content-row .card:active { transform: scale(.97); box-shadow: none; }
+
+  #categories { margin-bottom: 10px; }
+  .cats-grid { margin-inline: 0; padding: 0 16px 2px; }
+
+  .app-bottom-nav {
+    inset-inline: 14px;
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    height: 70px;
+    padding: 6px 8px;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 22px;
+    background: rgba(25,23,21,.97);
+    box-shadow: 0 12px 30px rgba(0,0,0,.52);
+    backdrop-filter: blur(16px);
+  }
+  .app-bottom-nav__item { gap: 3px; border-radius: 14px; font-size: .6rem; }
+  .app-bottom-nav__item.is-active { color: #fff; background: transparent; }
+  .app-bottom-nav__item.is-active .app-bottom-nav__icon { color: var(--accent); }
+  .app-bottom-nav__icon svg { width: 21px; height: 21px; }
 }

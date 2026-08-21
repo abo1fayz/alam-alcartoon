@@ -18,6 +18,7 @@
 </head>
 <body>
 
+  <!-- واجهة الهاتف: «رفّ المشاهدة الداكن» — رأس هادئ، تبويبات محتوى، بانر مضغوط ورفوف أفقية. -->
   <!-- ===== Navbar ===== -->
   <header class="navbar">
     <a class="navbar__brand" href="index.html">
@@ -51,18 +52,17 @@
 
   <main class="container home-main">
 
+    <nav class="home-content-tabs" aria-label="استكشاف المحتوى">
+      <a class="is-active" href="index.html">الرئيسية</a>
+      <a href="search.html?type=series">المسلسلات</a>
+      <a href="search.html?type=movies">الأفلام</a>
+      <a href="search.html?type=my-list">قائمتي</a>
+    </nav>
+
     <!-- ===== Hero ===== -->
     <section class="hero hero--home" id="hero">
       <div class="spinner" id="hero-spinner"></div>
     </section>
-
-    <nav class="home-content-tabs" aria-label="استكشاف المحتوى">
-      <a class="is-active" href="#series-section">الكل</a>
-      <a href="#series-section">مسلسلات</a>
-      <a href="#movies-section">أفلام</a>
-      <a href="#popular-section">الأكثر مشاهدة</a>
-      <a href="#categories">التصنيفات</a>
-    </nav>
 
     <!-- ===== أحدث المسلسلات ===== -->
     <section class="section section--home" id="series-section">
@@ -109,6 +109,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase.js"></script>
   <script src="js/app.js?v=no-adsterra-v1"></script>
-  <script src="js/home.js?v=inspired-redesign-1"></script>
+  <script src="js/home.js?v=content-shelf-v2"></script>
 </body>
 </html>
