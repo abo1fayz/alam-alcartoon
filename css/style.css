@@ -1410,3 +1410,59 @@ body {
   .app-bottom-nav__item.is-active .app-bottom-nav__icon { color: var(--accent); }
   .app-bottom-nav__icon svg { width: 21px; height: 21px; }
 }
+
+/* سلايدر الاقتراحات: تغير هادئ للبطاقة المميزة، مع نقاط تحكم صغيرة لا تزاحم النص. */
+.hero--home.is-carousel { isolation: isolate; touch-action: pan-y; }
+.hero--home.is-carousel.is-dragging { cursor: grabbing; }
+.hero--home .hero__slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  opacity: 0;
+  pointer-events: none;
+}
+.hero--home .hero__slide.is-active {
+  z-index: 1;
+  opacity: 1;
+  pointer-events: auto;
+  animation: hero-carousel-enter .48s cubic-bezier(.23, 1, .32, 1) both;
+}
+.hero--home .hero__slide.is-leaving {
+  z-index: 0;
+  animation: hero-carousel-leave .42s cubic-bezier(.55, 0, .75, .2) both;
+}
+.hero--home .hero__slide.is-active .hero__img { animation: hero-carousel-image 5.6s linear both; }
+.hero__dots {
+  position: absolute;
+  z-index: 3;
+  inset-inline-end: 18px;
+  bottom: 19px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  direction: ltr;
+}
+.hero__dot {
+  width: 6px;
+  height: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 247, 237, .45);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, .4);
+  transition: width .18s cubic-bezier(.23, 1, .32, 1), background .18s cubic-bezier(.23, 1, .32, 1), transform .18s cubic-bezier(.23, 1, .32, 1);
+}
+.hero__dot.is-active { width: 19px; background: var(--accent); }
+.hero__dot:active { transform: scale(.9); }
+@keyframes hero-carousel-enter { from { opacity: 0; transform: translate3d(0, 8px, 0); } to { opacity: 1; transform: translate3d(0, 0, 0); } }
+@keyframes hero-carousel-leave { from { opacity: 1; } to { opacity: 0; } }
+@keyframes hero-carousel-image { from { transform: scale(1.025); } to { transform: scale(1.075); } }
+@media (max-width: 767px) {
+  .hero--home .hero__dots { inset-inline-end: 15px; bottom: 15px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero--home .hero__slide.is-active,
+  .hero--home .hero__slide.is-leaving,
+  .hero--home .hero__slide.is-active .hero__img { animation: none; }
+}
